@@ -11,10 +11,10 @@ def linkDiscover( url )
 	puts url
 
 	page = agent.get(url)
-	listLinks.add(page.links)
+	listLinks = page.links
 	
 	page.links.each do |link|
-		linkDiscover(link.uri)
+		puts link.uri
 	end
 
 end
