@@ -1,18 +1,20 @@
 require 'mechanize'
 require 'rubygems'
 
-def discover( url )
+listLinks = Array.new
+visitedLinks = Array.new
+
+def linkDiscover( url )
 #create a new Mechanize agent for crawling
 	agent = Mechanize.new
 
 	puts url
 
 	page = agent.get(url)
-
-
-
+	listLinks.add(page.links)
+	
 	page.links.each do |link|
-		puts link.text
+		linkDiscover(link.uri)
 	end
 
 end
@@ -26,7 +28,7 @@ while true
 	if command[0] == "fuzz"
 		case command[1]
 			when /\Adiscover\z/i
-				discover( command[2] )
+				linkDiscover( command[2] )
 		end
 	end
 end
