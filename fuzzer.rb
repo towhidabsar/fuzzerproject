@@ -5,6 +5,10 @@ $listLinks = Array.new
 $visitedLinks = Array.new
 $linksFilter
 
+def authentication
+	
+
+end
 def linkDiscover( url )
 #create a new Mechanize agent for crawling
 	agent = Mechanize.new{|a| a.ssl_version, a.verify_mode = 'SSLv3', 
@@ -19,12 +23,15 @@ def linkDiscover( url )
 	puts $listLinks.length
 
 	$listLinks.each do |link|
-		$visitedLinks << page
-		puts link.uri
-		puts page.links
-		page = agent.get(link.uri)
-		$listLinks << page.links
-
+		if $visitedLinks.include? link
+			
+		else
+			$visitedLinks << page
+			puts link.uri
+			puts page.links
+			page = agent.get(link.uri)
+			$listLinks << page.links
+		end
 
 	end
 end
