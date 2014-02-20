@@ -11,10 +11,13 @@ def linkDiscover( url )
 	puts url
 
 	page = agent.get(url)
-	listLinks = page.links
+	listLinks.push(page.links)
 	
-	page.links.each do |link|
+	listLinks.each do |link|
+		visitedLinks.push(page)
 		puts link.uri
+		page = agent.get(link.uri)
+		listLinks.push(page.links)
 	end
 
 end
@@ -22,7 +25,6 @@ end
 puts "Welcome to Fuzz Web Application Testing Tool. Please enter - fuzz [discover | test] url OPTIONS"
 
 while true
-
 	command = gets.chomp
 	command = command.split
 	if command[0] == "fuzz"
