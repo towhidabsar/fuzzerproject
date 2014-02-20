@@ -1,44 +1,74 @@
 require 'mechanize'
 require 'rubygems'
+require 'uri'
 
 $listLinks = Array.new
 $visitedLinks = Array.new
+$filteredInputs = Hash.new
+$domain = ""
 $linksFilter
 
-def authentication
-	
-
+#Discovers all the inputs in the page.
+def inputDiscover(page)
+	#Get the URL of the current page.
+	url = page.link.uri
+	url = url.to_s
+	url = url.split('?')
+	puts "AA"
+	link = url[0]
+	input = url[1]
+	if not $filteredInputs.has_key? link
+		$filteredInputs[link] = Array.new
+	end
+	if url.length > 1
+		input = input.split('&')
+		input.each do |x|
+			$filteredInputs[link] << x
+		end
+	end
+	#Get all the form parameters of the page
+	inputForms = page.forms
+	$filteredInputs[link] << inputForms
 end
+
 def linkDiscover( url )
 #create a new Mechanize agent for crawling
 	agent = Mechanize.new{|a| a.ssl_version, a.verify_mode = 'SSLv3', 
 	OpenSSL::SSL::VERIFY_NONE}
 
 	puts url
-
-	page = agent.get(url)
-	$listLinks = page.links
+	
+	mainPage = agent.get(url)
+	$domain = URI.split(url)
+	puts $domain
+	mainPage.links.each do |link|
+		$listLinks << link.uri
+	end
 	$visitedLinks = []
-	puts [].length
-	puts $listLinks.length
-
+	
 	$listLinks.each do |link|
-		if $visitedLinks.include? link
-			
-		else
-			$visitedLinks << page
-			puts link.uri
-			puts page.links
-			page = agent.get(link.uri)
-			$listLinks << page.links
+		if not linkOffsiteFilter(link)
+			if not $visitedLinks.include? link
+				$visitedLinks << link
+				currentPage = agent.get(link)
+				puts currentPage.link
+				inputDiscover(currentPage)
+				currentPage.links.each do |link|
+					$listLinks << link.uri
+				end
+				#Make sure no duplicate links are present just in case
+				$listLinks = $listLinks.uniq
+			end
 		end
-
 	end
 end
 
 #Remove links that go offsite from given array into corresponding array
-def linkOffsiteFilter
-
+def linkOffsiteFilter(link)
+	url = link
+	url = url.to_s
+	url = URI.split(url)
+	return $domain[2] == url[2]
 end
 
 #Creates the arrays that are needed to hold the links
@@ -65,12 +95,13 @@ def main
 					#do something here, le hue
 			#end
 		else 
-			puts command[0]+ " is an invalid command."
+			puts " An invalid command."
 		end
 	end
 end
 
 main
+puts "THE END"
 
 #.select or .findall
 # .select takes in a block
