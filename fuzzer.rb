@@ -8,9 +8,9 @@ require_relative 'CustomAuthentication'
 $listLinks
 $visitedLinks
 
-$linkInputs
-$formInputs
-$cookieInputs
+$linkInputs = Hash.new
+$formInputs = Hash.new
+$cookieInputs = Hash.new
 
 $domain
 $linksFilter
@@ -37,7 +37,8 @@ def linkDiscover( url )
 					$visitedLinks << link
 					currentPage = agent.get(link)
 					puts currentPage.link
-					inputDiscover(currentPage, $linkInputs, $formInputs, $cookieInputs) 
+					$linkInputs = InputDiscovery.linkInputDiscover(page, $linkInputs)
+					$formInputs = InputDiscovery.formInputDiscover(page, $formInputs)
 					currentPage.links.each do |link|
 						$listLinks << link.uri
 					end
@@ -49,6 +50,8 @@ def linkDiscover( url )
 			end
 		end
 	end
+	
+	displayInputs
 end
 
 #Remove links that go offsite from given array into corresponding array
@@ -61,13 +64,24 @@ end
 
 #Creates the arrays that are needed to hold the links
 def displayInputs
-	$filteredInputs.each do |link, array|
-		puts "For <"+link+"> : Inputs"
-		puts "#############################################################################"
-		array.each do |input|
+	puts "Inputs via Links:"
+	puts "##########################################################################"
+	linkInputs.each do |key, value|
+		puts "Base URL : "+key
+		puts "Possible Inputs:"
+		value.each do |input|
 			puts input
 		end
-		puts "#############################################################################"
+	end
+	puts "##########################################################################"
+	
+	puts "Inputs via Forms:"
+	puts "##########################################################################"
+	formInputs.each do |key, value|
+		puts "Page URL : " + key
+		value.each do |input|
+			puts input.to_s
+		end
 	end
 end
 
