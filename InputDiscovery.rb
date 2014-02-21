@@ -1,5 +1,9 @@
 #Discovers all the inputs in the page.
-def inputDiscover(page)
+require 'mechanize'
+require 'rubygems'
+require 'uri'
+
+def linkInputDiscover(page, linkInputs)
 	#Get the URL of the current page.
 	url = page.link.uri
 	url = url.to_s
@@ -8,16 +12,36 @@ def inputDiscover(page)
 	link = url[0]
 	puts link
 	input = url[1]
-	if not $filteredInputs.has_key? link
-		$filteredInputs[link] = Array.new
+	if not linkInputs.has_key? link
+		linkInputs[link] = Array.new
 	end
 	if url.length > 1
 		input = input.split('&')
 		input.each do |x|
-			$filteredInputs[link] << x
+			linkInputs[link] << x
 		end
 	end
+	
+	return linkInputs
+end
+
+def formInputDiscover(page, formInputs)
 	#Get all the form parameters of the page
 	inputForms = page.forms
-	$filteredInputs[link] << inputForms
+	url = page.link.uri
+	if not formInputs.has_key? url
+		formInputs[url] = Array.new
+	end
+	
+	inputForms.each do |form|
+		formInputs[url] << form
+	end
+	
+	return formInputs
+end
+
+
+def cookieInputDiscover(page, cookieInputs)
+
+
 end
