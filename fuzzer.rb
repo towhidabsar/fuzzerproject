@@ -1,14 +1,18 @@
 require 'mechanize'
 require 'rubygems'
 require 'uri'
-require InputValidation.rb
-require InputDiscovery.rb
-require CustomAuthentication.rb
+require_relative 'InputValidation'
+require_relative 'InputDiscovery'
+require_relative 'CustomAuthentication'
  
-$listLinks = Array.new
-$visitedLinks = Array.new
-$filteredInputs = Hash.new
-$domain = ""
+$listLinks
+$visitedLinks
+
+$linkInputs
+$formInputs
+$cookieInputs
+
+$domain
 $linksFilter
 
 
@@ -33,7 +37,7 @@ def linkDiscover( url )
 					$visitedLinks << link
 					currentPage = agent.get(link)
 					puts currentPage.link
-					inputDiscover(currentPage) 
+					inputDiscover(currentPage, $linkInputs, $formInputs, $cookieInputs) 
 					currentPage.links.each do |link|
 						$listLinks << link.uri
 					end
