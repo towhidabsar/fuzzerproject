@@ -5,17 +5,7 @@ require_relative 'InputValidation'
 require_relative 'InputDiscovery'
 require_relative 'CustomAuthentication'
 
-$listLinks
-$visitedLinks
 
-$linkInputs
-$formInputs
-$cookieInputs
-
-$domain
-$linksFilter
-
-#
 def main
 	puts "Welcome to Fuzzy, the Web Applicadtion Testing Tool."
 	puts "Please enter: fuzz [discover | test] <url> OPTIONS"
@@ -29,13 +19,8 @@ def main
 		if command[0] == "fuzz"
 			case command[1]
 				when /\Adiscover\z/i
-					$listLinks = Array.new
-					$visitedLinks = Array.new
-					$filteredInputs = Hash.new
-					$domain = ""
 					linkDiscover( command[2] )
 					puts "Displaying all the inputs of the system"
-					displayInputs
 			end
 			#case command[1]
 			#	when /\Atest\z/i
