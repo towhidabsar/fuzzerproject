@@ -5,15 +5,14 @@ require_relative 'InputValidation'
 require_relative 'InputDiscovery'
 require_relative 'CustomAuthentication'
  
-$listLinks
-$visitedLinks
+$listLinks = Array.new
+$visitedLinks = Array.new
 
 $linkInputs = Hash.new
 $formInputs = Hash.new
 $cookieInputs = Hash.new
 
-$domain
-$linksFilter
+$domain = ""
 
 class PageDiscovery
 	def self.linkDiscover( url )
@@ -37,21 +36,22 @@ class PageDiscovery
 						$visitedLinks << link
 						currentPage = agent.get(link)
 						puts currentPage.link
-						$linkInputs = InputDiscovery.linkInputDiscover(page, $linkInputs)
-						$formInputs = InputDiscovery.formInputDiscover(page, $formInputs)
+						$linkInputs = InputDiscovery.linkInputDiscover(currentPage, $linkInputs)
+						$formInputs = InputDiscovery.formInputDiscover(currentPage, $formInputs)
 						currentPage.links.each do |link|
 							$listLinks << link.uri
 						end
 						#Make sure no duplicate links are present just in case
 						$listLinks = $listLinks.uniq
-					rescue
-						puts "There was an exception. It was ignored"
+					rescue => e
+						puts e.message
+						puts e.backtrace
 					end
 				end
 			end
 		end
 		
-		displayInputs
+		self.displayInputs
 	end
 
 	#Remove links that go offsite from given array into corresponding array
@@ -66,7 +66,7 @@ class PageDiscovery
 	def self.displayInputs
 		puts "Inputs via Links:"
 		puts "##########################################################################"
-		linkInputs.each do |key, value|
+		$linkInputs.each do |key, value|
 			puts "Base URL : "+key
 			puts "Possible Inputs:"
 			value.each do |input|
@@ -77,8 +77,8 @@ class PageDiscovery
 		
 		puts "Inputs via Forms:"
 		puts "##########################################################################"
-		formInputs.each do |key, value|
-			puts "Page URL : " + key
+		$formInputs.each do |key, value|
+			puts "Page URL : " + key.to_s
 			value.each do |input|
 				puts input.to_s
 			end

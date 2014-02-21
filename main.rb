@@ -8,10 +8,10 @@ require File.join File.dirname(__FILE__), 'fuzzer'
 
 
 def main
-	puts "Welcome to Fuzzy, the Web Applicadtion Testing Tool."
+	#puts "Welcome to Fuzzy, the Web Applicadtion Testing Tool."
 	puts "Please enter: fuzz [discover | test] <url> OPTIONS"
-	puts "/tMore Options: -- "
-	puts "/t/tcustom-auth="
+	#puts "/tMore Options: -- "
+	#puts "/t/tcustom-auth="
 
 	while true
 		command = gets.chomp
@@ -20,7 +20,7 @@ def main
 		if command[0] == "fuzz"
 			case command[1]
 				when /\Adiscover\z/i
-					fuzzer.linkDiscover(command[2])
+					PageDiscovery.linkDiscover(command[2])
 					puts "Displaying all the inputs of the system"
 			end
 			#case command[1]
