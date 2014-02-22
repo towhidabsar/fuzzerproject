@@ -6,6 +6,17 @@ require File.join File.dirname(__FILE__), 'InputDiscovery'
 require File.join File.dirname(__FILE__), 'CustomAuthentication'
 require File.join File.dirname(__FILE__), 'fuzzer'
 
+commands = Hash.new { |hash, key| hash[key] = 
+	"#{key} is not currently support." }
+
+commands{"discover": PageDiscovery.linkDiscover,
+		 #"test": ,
+		 #"custom-auth": ,
+		 #"common-words": ,
+		 #"vectors": ,
+		 #"sensitive": ,
+		 "exit": die("Exiting Fuzzy.")
+		}
 
 def main
 	#puts "Welcome to Fuzzy, the Web Applicadtion Testing Tool."
@@ -14,16 +25,16 @@ def main
 	#puts "/t/tcustom-auth="
 
 	while true
-		command = gets.chomp
-		command = command.split
+		input = gets.chomp
+		input = command.split
 
-		if command[0] == "fuzz"
-			case command[1]
+		if input[0] == "fuzz"
+			case input[1]
 				when /\Adiscover\z/i
-					PageDiscovery.linkDiscover(command[2])
+					PageDiscovery.linkDiscover(input[2])
 					puts "Displaying all the inputs of the system"
 			end
-			#case command[1]
+			#case input[1]
 			#	when /\Atest\z/i
 					#do something here, le hue
 			#end
