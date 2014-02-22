@@ -8,18 +8,25 @@ require 'mechanize'
 # authentication turned off, the fuzzer should just crawl the exterior
 #  of the webapp (perhaps get lucky if the vector list had a password)
 class CustomAuthentication
+	def self.authenticate(agent, site)
+		agent.get(site) do |page|
+			puts page
+			#login_page = agent.click(page.link_with(:text => site))
+			case site
+				when "http://127.0.0.1/dvwa"
+					# Submit the login form
+					login_form = page.form_with(:action => 'login.php')
+					login_form.username = "admin"
+					login_form.password = "password"
+					agent.submit(login_form, login_form.buttons.first)
 
-=begin
-	siteInfo = {
-		"dvwa": ["admin", "password"],
-		"bodgeit": "admin", "password"]
-	}
-=end
-
-	username = "admin"
-	password = "password"
-
-	def self.authenticate(page, site)
-		
+				when "http://127.0.0.1/bodgeit"
+					login_page = agent.click(page.link_with(:text => /Login/))	
+					login_form = login_page.form_with(:action => '/login.jsp')
+					login_form.username = "test@thebodgeitstore.com"
+					login_form.password = "password"
+					agent.submit(login_form, login_form.buttons.first)
+			end
+		end
 	end
 end
