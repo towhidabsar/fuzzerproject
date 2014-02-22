@@ -1,9 +1,10 @@
 require 'mechanize'
 require 'rubygems'
 require 'uri'
-require_relative 'InputValidation'
-require_relative 'InputDiscovery'
-require_relative 'CustomAuthentication'
+require File.join File.dirname(__FILE__), 'InputValidation'
+require File.join File.dirname(__FILE__), 'InputDiscovery'
+require File.join File.dirname(__FILE__), 'CustomAuthentication'
+require File.join File.dirname(__FILE__), 'fuzzer'
 
 
 def main
@@ -19,7 +20,7 @@ def main
 		if command[0] == "fuzz"
 			case command[1]
 				when /\Adiscover\z/i
-					linkDiscover( command[2] )
+					fuzzer.linkDiscover(command[2])
 					puts "Displaying all the inputs of the system"
 			end
 			#case command[1]
