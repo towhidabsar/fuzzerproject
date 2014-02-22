@@ -10,7 +10,7 @@ $visitedLinks = Array.new
 
 $linkInputs = Hash.new
 $formInputs = Hash.new
-$cookieInputs = Hash.new
+$cookieInputs = Array.new
 
 $domain = ""
 
@@ -38,6 +38,7 @@ class PageDiscovery
 						puts currentPage.link
 						$linkInputs = InputDiscovery.linkInputDiscover(currentPage, $linkInputs)
 						$formInputs = InputDiscovery.formInputDiscover(currentPage, $formInputs)
+						$cookieInputs = InputDiscovery.cookieInputDiscover(agent, $cookieInputs)
 						currentPage.links.each do |link|
 							$listLinks << link.uri
 						end
@@ -61,7 +62,7 @@ class PageDiscovery
 		url = URI.split(url)
 		return $domain[2] == url[2]
 	end
-
+	
 	#Creates the arrays that are needed to hold the links
 	def self.displayInputs
 		puts "Inputs via Links:"
@@ -87,7 +88,15 @@ class PageDiscovery
 				end
 			end
 		end
+		
+		puts "Inputs via Cookies:"
+		puts "##########################################################################"
+		
+		$cookieInputs.each do |cookie|
+			puts "Name: "+cookie.name+"\tDomain Name: "+cookie.domain+"\tValue = "+cookie.value
+		end
 	end
+	
 end
 
 #.select or .findall

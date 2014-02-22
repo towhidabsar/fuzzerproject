@@ -41,8 +41,9 @@ class InputDiscovery
 	end
 
 
-	def self.cookieInputDiscover(page, cookieInputs)
-
-
+	def self.cookieInputDiscover(agent, cookieInputs)
+		cookies = agent.cookies
+		cookieInputs = agent.cookies
+		return cookieInputs
 	end
 end
