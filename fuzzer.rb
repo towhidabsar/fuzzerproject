@@ -80,7 +80,11 @@ class PageDiscovery
 		$formInputs.each do |key, value|
 			puts "Page URL : " + key.to_s
 			value.each do |input|
-				puts input.to_s
+				input.fields.each do |field|
+					if not field.type == nil
+						puts "Type : "+field.type+"\t Name : "+field.name
+					end
+				end
 			end
 		end
 	end
