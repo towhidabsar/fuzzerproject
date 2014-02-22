@@ -33,11 +33,10 @@ def inputDiscover(page)
 end
 
 def linkDiscover( url )
-#create a new Mechanize agent for crawling
 	agent = Mechanize.new{|a| a.ssl_version, a.verify_mode = 'SSLv3', 
 	OpenSSL::SSL::VERIFY_NONE}
 
-	puts url
+	puts "\n\tCrawling <#{url}>"
 	
 	mainPage = agent.get(url)
 	$domain = URI.split(url)
@@ -88,10 +87,12 @@ def displayInputs
 	end
 end
 
-
+#
 def main
 	puts "Welcome to Fuzzy, the Web Applicadtion Testing Tool."
 	puts "Please enter: fuzz [discover | test] <url> OPTIONS"
+	puts "/tMore Options: -- "
+	puts "/t/tcustom-auth="
 
 	while true
 		command = gets.chomp
