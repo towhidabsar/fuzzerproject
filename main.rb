@@ -4,7 +4,7 @@ require 'uri'
 require File.join File.dirname(__FILE__), 'InputValidation'
 require File.join File.dirname(__FILE__), 'InputDiscovery'
 require File.join File.dirname(__FILE__), 'CustomAuthentication'
-require File.join File.dirname(__FILE__), 'fuzzer'
+require File.join File.dirname(__FILE__), 'PageDiscovery'
 
 commands = Hash.new { |hash, key| hash[key] = 
 	"#{key} is not currently support." }
