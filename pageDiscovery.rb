@@ -25,13 +25,13 @@ class PageDiscovery
 		#Initializes structures to save page information / input 
 		
 			#use uri.query rename to linkqueries -- move to main
-			linkInputs = Hash.new
+			linkQueries = Hash.new
 			
 			#standard inputs found on a page (i.e. username / pw fields, text boxes, etc..) -- move to main
 			formInputs = Hash.new
 			
 			#cookies found on a page --rename to cookies -- move to main
-			cookieInputs = Array.new
+			cookies = Array.new
 	
 		#Authenticate to given link -- move to main
 		puts "\n\tCrawling <#{url}>\n"
@@ -51,9 +51,9 @@ class PageDiscovery
 					visitedLinks << link
 					puts link
 					currentPage = $agent.get(link)
-					linkInputs = InputDiscovery.linkInputDiscover(currentPage, linkInputs)
+					linkQueries = InputDiscovery.linkInputDiscover(currentPage, linkQueries)
 					formInputs = InputDiscovery.formInputDiscover(currentPage, formInputs)
-					cookieInputs = InputDiscovery.cookieInputDiscover($agent, cookieInputs)
+					cookies = InputDiscovery.cookieInputDiscover($agent, cookies)
 					currentPage.links.each do |subLink|
 						#if(currentPage.link_with(:text => "/dvwa"))
 							listLinks << currentPage.uri.merge(subLink.uri)
@@ -71,7 +71,7 @@ class PageDiscovery
 			end
 			puts ""
 		end
-		displayInputs(linkInputs, formInputs, cookieInputs)
+		displayInputs(linkQueries, formInputs, cookies)
 	end
 
 	#Remove links that go offsite from given array into corresponding array
