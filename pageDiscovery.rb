@@ -10,20 +10,36 @@ $agent
 
 class PageDiscovery
 	def self.linkDiscover( url )
+		#Initialize the agent
 		$agent = Mechanize.new{|a| a.ssl_version, a.verify_mode = 'SSLv3', 
 		OpenSSL::SSL::VERIFY_NONE}
-
-		listLinks = Array.new
-		visitedLinks = Array.new
-		linkInputs = Hash.new
-		formInputs = Hash.new
-		cookieInputs = Array.new
-
+		
+		#Initializes the structures to contain links
+	
+			#List of links found that will be traversed -- to be moved to main
+			listLinks = Array.new
+			
+			#List of links traversed --- to be moved to main
+			visitedLinks = Array.new
+		
+		#Initializes structures to save page information / input 
+		
+			#use uri.query rename to linkqueries -- move to main
+			linkInputs = Hash.new
+			
+			#standard inputs found on a page (i.e. username / pw fields, text boxes, etc..) -- move to main
+			formInputs = Hash.new
+			
+			#cookies found on a page --rename to cookies -- move to main
+			cookieInputs = Array.new
+	
+		#Authenticate to given link -- move to main
 		puts "\n\tCrawling <#{url}>\n"
 		CustomAuthentication.authenticate($agent, url)
 		mainPage = $agent.get(url)
 		$domain = URI.split(url)
-
+		
+		
 		listLinks << mainPage.uri
 		mainPage.links.each do |link|
 			listLinks << mainPage.uri.merge(link.uri)

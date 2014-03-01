@@ -30,3 +30,13 @@ class CustomAuthentication
 		end
 	end
 end
+
+#low priority
+#Simple refactor
+# traverse given link for a specified type of input field ( i.e. username / password & submit button)
+# hardcode credentials for dvwa and bodgeit (already have)
+# return success status (boolean)
+
+
+#if we really want, we could pass in a user name and password 
+#for it to authenticate with (if we wish to)

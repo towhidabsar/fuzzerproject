@@ -33,5 +33,18 @@ def main
 	end
 end
 
+# if customAuth option
+# 	customAuth(link)
+# linkDiscover(link)
+
+#linkQueries = new Array ...
+#formInputs = new..
+#linkCookies = new...
+
+#loop
+# linkQueries concat( inputDiscovery.link)
+# formInputs = concat(inputDiscovery.forms)
+# linkCookies = concat(inputDiscovery.cookies)
+
 main
 puts "THE END"
