@@ -19,7 +19,7 @@ class PageDiscovery
 		#Initializes the structures to contain links
 	
 			#List of links found that will be traversed -- to be moved to main
-			listLinks = Array.new
+			foundLinks = Array.new
 			
 			#List of links traversed --- to be moved to main
 			visitedLinks = Array.new
@@ -42,15 +42,15 @@ class PageDiscovery
 		$domain = URI.split(url)
 		
 		
-		listLinks << mainPage.uri
+		foundLinks << mainPage.uri
 
-		#
+		# Input here what the formating of the links being put in are for memory sake
 		mainPage.links.each do |link|
-			listLinks << mainPage.uri.merge(link.uri)
+			foundLinks << mainPage.uri.merge(link.uri)
 		end
 
 		begin
-			listLinks.each do |link|
+			foundLinks.each do |link|
 				if not (filterOffSiteLinks(link) & (visitedLinks.include? link))
 					visitedLinks << link
 					puts link
@@ -60,14 +60,14 @@ class PageDiscovery
 
 					curPage.links.each do |subLink|
 						#if(curPage.link_with(:text => "/dvwa"))
-							listLinks << curPage.uri.merge(subLink.uri)
+							foundLinks << curPage.uri.merge(subLink.uri)
 						#else	
-						#	listLinks << subLink.uri
+						#	foundLinks << subLink.uri
 						#end
 					end
-					#listLinks.concat(guessPages(link))
+					#foundLinks.concat(guessPages(link))
 					#Make sure no duplicate links are present just in case
-					listLinks = listLinks.uniq
+					foundLinks = foundLinks.uniq
 				end
 				puts ""
 			end
@@ -91,9 +91,9 @@ class PageDiscovery
 		return $domain[2] == url[2]
 	end
 
-	# This method needs to search for certain types of extensions as well as check
-	# to see if any of the pages it finds are not in the found link directory
-	# therefore we need to pass it in the linkList
+	# Should this just add in all the guessed pages into 
+	# or also validate those pages?
+	# or ??? (insert suggestions)
 	def self.guessPages(url)
 		extensions = ['.php', '.jsp', '.txt', '.html', '.htm']
 		words = Array.new
