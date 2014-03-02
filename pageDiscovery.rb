@@ -1,13 +1,15 @@
 require 'mechanize'
 require 'rubygems'
 require 'uri'
-require_relative 'InputValidation'
-require_relative 'InputDiscovery'
-require_relative 'CustomAuthentication'
+require_relative 'inputValidation'
+require_relative 'inputDiscovery'
+require_relative 'customAuthentication'
+require_relative 'displayResults'
 
 $domain = ""
 $agent
 
+#
 class PageDiscovery
 	def self.linkDiscover( url )
 		#Initialize the agent
@@ -46,18 +48,15 @@ class PageDiscovery
 		mainPage.links.each do |link|
 			listLinks << mainPage.uri.merge(link.uri)
 		end
-		
+
 		begin
 			listLinks.each do |link|
 				if not (linkOffsiteFilter(link) & (visitedLinks.include? link))
 					visitedLinks << link
 					puts link
 					curPage = $agent.get(link)
-					#hostName = curPage.uri.host
-					linkQueries = InputDiscovery.discoverQueries(curPage.uri, linkQueries)
-					#linkQueries = InputDiscovery.discoverQueries(curPage.uri.queries, hostName, linkQueries)
-					formInputs = InputDiscovery.discoverForms(curPage.forms, curPage.uri, formInputs)
-					#formInputs = InputDiscovery.discoverForms(curPage.forms, hostName, formInputs)
+					linkQueries = InputDiscovery.discoverQueries(curPage, linkQueries)
+					formInputs = InputDiscovery.discoverForms(curPage, formInputs)
 
 					curPage.links.each do |subLink|
 						#if(curPage.link_with(:text => "/dvwa"))
@@ -77,48 +76,19 @@ class PageDiscovery
 			#puts e.backtrace
 		end
 		cookies = InputDiscovery.discoverCookies($agent, cookies)
-		displayInputs(linkQueries, formInputs, cookies)
+
+		displayResults.displayInputs(linkQueries)
+		displayResults.displayForms(formInputs)
+		displayResults.displayCookies(cookies)
 	end
 
-	#Remove links that go offsite from given array into corresponding array
+	# Remove links that go offsite from given array into corresponding array
+	# We need to 
 	def self.linkOffsiteFilter(link)
 		url = link
 		url = url.to_s
 		url = URI.split(url)
 		return $domain[2] == url[2]
-	end
-	
-	#Creates the arrays that are needed to hold the links
-	def self.displayInputs(links, forms, cookies)
-		puts "\n##########################################################################"
-		puts "\tInputs via Links:"
-		puts "##########################################################################"
-		links.each do |key, value|
-			puts "Base URL : "+key
-			puts "Possible Inputs:"
-			value.each do |input|
-				puts input
-			end
-		end
-
-		puts "\n##########################################################################"
-		puts "\tInputs via Forms:"
-		puts "##########################################################################"
-		forms.each do |key, value|
-			puts "Page URL: #{key.to_s}"
-			value.each do |input|
-				puts "\t Name: #{input.name} - Value: #{input.value}"
-				puts "\t\tType: #{input.type}"
-			end
-		end
-
-		puts "\n##########################################################################"
-		puts "\tInputs via Cookies:"
-		puts "##########################################################################"
-		
-		cookies.each do |cookie|
-			puts "Name: #{cookie.name} \tDomain Name: "+cookie.domain+"\tValue = "+cookie.value
-		end
 	end
 
 	#Guess dem pages.
@@ -129,7 +99,7 @@ class PageDiscovery
 		validURLs = Array.new
 		
 		#url = 'http://127.0.0.1'
-	#	url = InputValidation.validateURL(url)	
+		#url = InputValidation.validateURL(url)	
 
 		agent = Mechanize.new{|a| a.ssl_version, a.verify_mode = 'SSLv3', 
 			OpenSSL::SSL::VERIFY_NONE}
@@ -164,5 +134,3 @@ end
 
 #.select or .findall
 # .select takes in a block 
-
-# this is a useless comment, please delete me

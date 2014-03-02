@@ -7,12 +7,17 @@ class InputDiscovery
 
 	# Parses the given url to find possible input queries
 	# Params:
-	# +pageQueries+:: All the queries from the +URI+
-	# +host+:: The host name of the uri
+	# +page+:: The +Page+ which to crawl for queries
 	# +linkInputs+:: +Hash+ object of [link, queries]
-	# Return: Updated +linkInputs+ with queries from the given +host+
-	def self.discoveryQueries(pageQueries, host, linkInputs)
+	# Return: Updated +linkInputs+ with queries from the given +page+
+	def self.discoveryQueries(page, linkInputs)
 		
+		# All the queries from the given page
+		pageQueries = page.uri.queries
+
+		# The host name of the uri
+		host = page.uri.host # i.e. 'localhost/a'
+
 		# Check to see if given host is in the hash map
 		if not linkInputs.has_key? host
 			linkInputs[host] = Array.new
