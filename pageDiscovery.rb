@@ -41,22 +41,27 @@ class PageDiscovery
 		
 		
 		listLinks << mainPage.uri
+
+		#
 		mainPage.links.each do |link|
 			listLinks << mainPage.uri.merge(link.uri)
 		end
-
-		listLinks.each do |link|
-			if not (linkOffsiteFilter(link) & (visitedLinks.include? link))
-				begin
+		
+		begin
+			listLinks.each do |link|
+				if not (linkOffsiteFilter(link) & (visitedLinks.include? link))
 					visitedLinks << link
 					puts link
-					currentPage = $agent.get(link)
-					linkQueries = InputDiscovery.linkInputDiscover(currentPage, linkQueries)
-					formInputs = InputDiscovery.formInputDiscover(currentPage, formInputs)
-					cookies = InputDiscovery.cookieInputDiscover($agent, cookies)
-					currentPage.links.each do |subLink|
-						#if(currentPage.link_with(:text => "/dvwa"))
-							listLinks << currentPage.uri.merge(subLink.uri)
+					curPage = $agent.get(link)
+					#hostName = curPage.uri.host
+					linkQueries = InputDiscovery.discoverQueries(curPage.uri, linkQueries)
+					#linkQueries = InputDiscovery.discoverQueries(curPage.uri.queries, hostName, linkQueries)
+					formInputs = InputDiscovery.discoverForms(curPage.forms, curPage.uri, formInputs)
+					#formInputs = InputDiscovery.discoverForms(curPage.forms, hostName, formInputs)
+
+					curPage.links.each do |subLink|
+						#if(curPage.link_with(:text => "/dvwa"))
+							listLinks << curPage.uri.merge(subLink.uri)
 						#else	
 						#	listLinks << subLink.uri
 						#end
@@ -64,13 +69,14 @@ class PageDiscovery
 					#listLinks.concat(guessPages(link))
 					#Make sure no duplicate links are present just in case
 					listLinks = listLinks.uniq
-				rescue => e
-					puts e.message
-					#puts e.backtrace
 				end
+				puts ""
 			end
-			puts ""
+		rescue => e
+			puts e.message
+			#puts e.backtrace
 		end
+		cookies = InputDiscovery.discoverCookies($agent, cookies)
 		displayInputs(linkQueries, formInputs, cookies)
 	end
 

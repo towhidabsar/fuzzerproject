@@ -42,9 +42,9 @@ end
 #linkCookies = new...
 
 #loop
-# linkQueries concat( inputDiscovery.link)
-# formInputs = concat(inputDiscovery.forms)
-# linkCookies = concat(inputDiscovery.cookies)
+# linkQueries = inputDiscovery.link
+# formInputs = inputDiscovery.forms
+# linkCookies = inputDiscovery.cookies
 
 main
 puts "THE END"
