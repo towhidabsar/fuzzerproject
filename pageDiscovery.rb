@@ -13,26 +13,25 @@ $agent
 class PageDiscovery
 	def self.linkDiscover( url )
 		#Initialize the agent
-		$agent = Mechanize.new{|a| a.ssl_version, a.verify_mode = 'SSLv3', 
-		OpenSSL::SSL::VERIFY_NONE}
+		$agent = Mechanize.new{|a| a.ssl_version, 
+			a.verify_mode = 'SSLv3', OpenSSL::SSL::VERIFY_NONE}
 		
-		#Initializes the structures to contain links
+		# Initialize structs to contain links & save page info/input
+		# All of this will be moved to main
 	
-			#List of links found that will be traversed -- to be moved to main
+			#List of links found that will be traversed 
 			foundLinks = Array.new
 			
-			#List of links traversed --- to be moved to main
+			#List of links traversed
 			visitedLinks = Array.new
 		
-		#Initializes structures to save page information / input 
-		
-			#use uri.query rename to linkqueries -- move to main
+			#use uri.query rename to linkqueries
 			linkQueries = Hash.new
 			
-			#standard inputs found on a page (i.e. username / pw fields, text boxes, etc..) -- move to main
+			#standard inputs found on a page
 			formInputs = Hash.new
 			
-			#cookies found on a page --rename to cookies -- move to main
+			#cookies found on a page
 			cookies = Array.new
 	
 		#Authenticate to given link -- move to main
@@ -41,19 +40,20 @@ class PageDiscovery
 		mainPage = $agent.get(url)
 		$domain = URI.split(url)
 		
-		
-		foundLinks << mainPage.uri
+		foundLinks << mainPage.uri # Add the given page to the mainPage
 
-		# Input here what the formating of the links being put in are for memory sake
+		# Put here format of added links
 		mainPage.links.each do |link|
 			foundLinks << mainPage.uri.merge(link.uri)
 		end
 
 		begin
 			foundLinks.each do |link|
-				if not (filterOffSiteLinks(link) & (visitedLinks.include? link))
+				if not (filterOffSiteLinks(link) & 
+					(visitedLinks.include? link))
 					visitedLinks << link
 					puts link
+					
 					curPage = $agent.get(link)
 					linkQueries = InputDiscovery.discoverQueries(curPage, linkQueries)
 					formInputs = InputDiscovery.discoverForms(curPage, formInputs)
@@ -65,8 +65,10 @@ class PageDiscovery
 						#	foundLinks << subLink.uri
 						#end
 					end
-					#foundLinks.concat(guessPages(link))
-					#Make sure no duplicate links are present just in case
+					#foundLinks.concat(guessPages(link)) or
+					#foundLinks << guessPages(link) ???
+
+					# Ensure no duplicates are in the list
 					foundLinks = foundLinks.uniq
 				end
 				puts ""
@@ -82,8 +84,9 @@ class PageDiscovery
 		displayResults.displayCookies(cookies)
 	end
 
-	# Remove links that go offsite from given array into corresponding array
-	# We need to have a verify that this is actually doing what we think it is doing
+	# Remove links that go offsite from given array into corresponding 
+	# array. We need to have a verify that this is actually doing what 
+	# we think it is doing
 	def self.filterOffSiteLinks(link)
 		url = link
 		url = url.to_s
