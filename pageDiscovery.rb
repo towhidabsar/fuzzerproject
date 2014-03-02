@@ -51,7 +51,7 @@ class PageDiscovery
 
 		begin
 			listLinks.each do |link|
-				if not (linkOffsiteFilter(link) & (visitedLinks.include? link))
+				if not (filterOffSiteLinks(link) & (visitedLinks.include? link))
 					visitedLinks << link
 					puts link
 					curPage = $agent.get(link)
@@ -83,15 +83,17 @@ class PageDiscovery
 	end
 
 	# Remove links that go offsite from given array into corresponding array
-	# We need to 
-	def self.linkOffsiteFilter(link)
+	# We need to have a verify that this is actually doing what we think it is doing
+	def self.filterOffSiteLinks(link)
 		url = link
 		url = url.to_s
 		url = URI.split(url)
 		return $domain[2] == url[2]
 	end
 
-	#Guess dem pages.
+	# This method needs to search for certain types of extensions as well as check
+	# to see if any of the pages it finds are not in the found link directory
+	# therefore we need to pass it in the linkList
 	def self.guessPages(url)
 		extensions = ['.php', '.jsp', '.txt', '.html', '.htm']
 		words = Array.new
