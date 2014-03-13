@@ -1,5 +1,8 @@
+require 'mechanize'
+require 'rubygems'
+require 'uri'
 
-class displayResults
+class DisplayResults
 
 	#Creates the arrays that are needed to hold the links
 	def self.displayInputs(links)

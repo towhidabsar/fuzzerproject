@@ -10,25 +10,27 @@ class InputDiscovery
 	# +page+:: The +Page+ which to crawl for queries
 	# +linkInputs+:: +Hash+ object of [link, queries]
 	# Return: Updated +linkInputs+ with queries from the given +page+
-	def self.discoveryQueries(page, linkInputs)
+	def self.discoverQueries(page, linkQueries)
 		
 		# All the queries from the given page
-		pageQueries = page.uri.queries
+		pageQueries = page.uri.query
 
 		# The host name of the uri
 		host = page.uri.host # i.e. 'localhost/a'
 
 		# Check to see if given host is in the hash map
-		if not linkInputs.has_key? host
-			linkInputs[host] = Array.new
+		if not linkQueries.has_key? host
+			linkQueries[host] = Array.new
 		end
 
-		# Traverse each query in pageQueries & append to it's array
-		pageQueries.each do |query|
-			linkInputs[host] << query
+		if not pageQueries == nil
+			pageQueries = pageQueries.split("&")
+			# Traverse each query in pageQueries & append to it's array
+			pageQueries.each do |query|
+				linkQueries[host] << query
+			end
 		end
-
-		return linkInputs
+		return linkQueries
 	end 
 
 	# Parses the given list of forms & add them to the given hash map
