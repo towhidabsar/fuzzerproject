@@ -39,17 +39,17 @@ class InputDiscovery
 	# +host+:: The host name of the uri
 	# +linkInputs+:: +Hash+ object of [link, queries]
 	# Return: Updated +formInputs+ with forms from the given +page+
-	def self.discoverForms(pageForms, host, formInputs)
+	def self.discoverForms(pageForms, link, formInputs)
 
 		# Check to see if given host is in the hash map
-		if not formInputs.has_key? host
-			formInputs[host] = Array.new
+		if not formInputs.has_key? link
+			formInputs[link] = Array.new
 		end
 		
 		# Traverse each form in pageForms & add it to it's array
 		pageForms.each do |form|
-			formInputs[host].concat(form.fields)
-			formInputs[host].concat(form.buttons)
+			formInputs[link].concat(form.fields)
+			formInputs[link].concat(form.buttons)
 		end
 		
 		return formInputs

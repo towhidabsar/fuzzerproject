@@ -25,7 +25,7 @@ class FuzzOptions
 			#Get the current page for the link
 			curPage = agent.get(link)
 			#Get the host of the link i.e. localhost/a 
-			curHost = curPage.uri.host
+			#curHost = curPage.uri.host
 			#Get all the input forms in the page.
 			pageForms = curPage.forms
 			
@@ -33,12 +33,30 @@ class FuzzOptions
 			linkQueries = InputDiscovery.discoverQueries(curPage, linkQueries)
 			
 			#Get all the input forms in the page
-			formInputs = InputDiscovery.discoverForms(pageForms, curHost, formInputs)
+			formInputs = InputDiscovery.discoverForms(pageForms, link, formInputs)
 		end
 		
 		cookies = InputDiscovery.discoverCookies(agent, cookies)
 		
 		return [ foundLinks, linkQueries, formInputs, cookies ] 
+	end
+	
+	def self.fuzzTest( agent, linkQueries, formInputs, cookies)
+		
+		formInputs.each_key do |link|
+			page = agent.get(link)
+			form = page.forms.first
+			if form != nil
+				puts "AAAAAA"
+				form.fields do |text|
+					text = "YADAYADAYADA"
+				end
+			
+			agent.submit(form, form.buttons.first)
+			page = agent.get(link)
+			puts page.title
+			end
+		end
 	end
 
 

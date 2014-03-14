@@ -35,7 +35,14 @@ def main
 					DisplayResults.displayCookies(results[3])
 					
 				when /\Atest\z/i
-					puts "fuzz test has not been implemented yet"
+					$agent = Mechanize.new{|a| a.ssl_version, 
+							a.verify_mode = 'SSLv3', OpenSSL::SSL::VERIFY_NONE}
+					results = FuzzOptions.fuzzDiscover( $agent, input[2])
+					
+					FuzzOptions.fuzzTest( $agent, results[1], results[2], results[3])
+					DisplayResults.displayInputs(results[1])
+					DisplayResults.displayForms(results[2])
+					DisplayResults.displayCookies(results[3])
 			end
 		else 
 			puts " An invalid command."
