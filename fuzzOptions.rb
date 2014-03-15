@@ -54,7 +54,7 @@ class FuzzOptions
 			
 			agent.submit(form, form.buttons.first)
 			page = agent.get(link)
-			puts page.title
+			puts page.labels
 			end
 		end
 	end
