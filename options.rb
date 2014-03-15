@@ -9,7 +9,7 @@ require_relative 'pageDiscovery'
 
 class Options
 
-	def self.fuzzDiscover( agent, mainURL)
+	def self.fuzzDiscover(agent, mainURL)
 	
 		#Initialize the required variables
 		linkQueries = Hash.new
@@ -18,7 +18,7 @@ class Options
 		foundLinks = Array.new
 		
 		# Get all the pages in the website.
-		foundLinks = PageDiscovery.pageDiscover( agent, mainURL )
+		foundLinks = PageDiscovery.pageDiscover(agent, mainURL)
 		
 		# Traverse each of the pages and find all the possible inputs.
 		foundLinks.each do |link|
@@ -32,27 +32,28 @@ class Options
 			formInputs = InputDiscovery.discoverForms(curPage, formInputs)
 		end
 		
-		cookies = InputDiscovery.discoverCookies(agent, cookies)
+		cookies = InputDiscovery.discoverCookies(agent)
 		
-		return [ foundLinks, linkQueries, formInputs, cookies ] 
+		return [foundLinks, linkQueries, formInputs, cookies] 
 	end
 	
 	def self.fuzzTest( agent, linkQueries, formInputs, cookies)
-		
-		formInputs.each_key do |link|
-			page = agent.get(link)
-			form = page.forms.first
-			if form != nil
-				puts "AAAAAA"
-				form.fields do |text|
-					text = "YADAYADAYADA"
-				end
-			
-			agent.submit(form, form.buttons.first)
-			page = agent.get(link)
-			puts page.title
-			end
-		end
+ 
+     curSecurity = ["low", "medium", "high"]
+     i = 0
+     #For dvwa change cookie value, start with low, medium and then high.
+     cookies.each do |cookie|
+     
+       if cookie.name = "security"
+         cookie.value = curSecurity[i]
+       end
+     
+       linkQueries.each do |link, queries|
+         agent.post( link, '>"><script>alert("XSS")</script>&"', 'Content-Type' => 'application/xml') )
+         puts agent.page.content
+         
+       end
+     end
 	end
 
 

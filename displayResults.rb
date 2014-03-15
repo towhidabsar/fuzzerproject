@@ -18,6 +18,7 @@ class DisplayResults
 		end
 	end
 
+  #
 	def self.displayForms(forms)
 		puts "\n##########################################################################"
 		puts "\tInputs via Forms:"

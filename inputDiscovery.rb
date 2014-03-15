@@ -8,7 +8,7 @@ class InputDiscovery
 	# Parses the given url to find possible input queries
 	# Params:
 	# +page+:: The +Page+ which to crawl for queries
-	# +linkInputs+:: +Hash+ object of [link, queries]
+	# +linkQueries+:: +Hash+ object of [link, queries]
 	# Return: Updated +linkInputs+ with queries from the given +page+
 	def self.discoverQueries(page, linkQueries)
 		
@@ -35,9 +35,8 @@ class InputDiscovery
 
 	# Parses the given list of forms & add them to the given hash map
 	# Params:
-	# +pageForms+:: All the forms from the +Page+
-	# +host+:: The host name of the uri
-	# +linkInputs+:: +Hash+ object of [link, queries]
+	# +page+:: Acquires the forms and +URI+
+	# +formInputs+:: +Hash+ object of [link, queries]
 	# Return: Updated +formInputs+ with forms from the given +page+
 	def self.discoverForms(page, formInputs)
 
@@ -65,11 +64,8 @@ class InputDiscovery
 	# 	the given array
 	# Params:
 	# +agent+:: 
-	# +cookieInputs+:: +Array+ object of [cookie]
 	# Return: Updated +cookieInputs+ with cookies from the browser
-	def self.discoverCookies(agent, cookieInputs)
-		cookies = agent.cookies
-		cookieInputs = agent.cookies
-		return cookieInputs
+	def self.discoverCookies(agent)
+		return agent.cookies
 	end
 end

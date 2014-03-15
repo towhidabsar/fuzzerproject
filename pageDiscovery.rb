@@ -5,28 +5,25 @@ require_relative 'inputValidation'
 require_relative 'inputDiscovery'
 require_relative 'customAuthentication'
 
-
-$domain = ""
-
 class PageDiscovery
 
-
+  @@domain = ""
 	def self.pageDiscover( agent, url )
 	
 		# List of links found that will be traversed 
 		foundLinks = Array.new
 		
-		#List of links already visited. Used to prevent repeated traversals.
+		# List of links already visited. Used to prevent repeated traversals.
 		visitedLinks = Array.new
 		
-		#Authenticate to given link -- move to main
+		# Authenticate to given link -- move to main
 		puts "\n\tCrawling <#{url}>\n"
 		CustomAuthentication.authenticate(agent, url)
 		
 		mainPage = agent.get(url)
-		$domain = URI.split(url)
+		domain = URI.split(url)
 		
-		foundLinks << mainPage.uri #Add the given page to the mainPage
+		foundLinks << mainPage.uri # Add the given page to the mainPage
 		
 		# Find all the links in the given page
 		mainPage.links.each do |link|
@@ -42,13 +39,13 @@ class PageDiscovery
 					
 					curPage = agent.get(link)
 					
-					#Find all the links in the website
+					# Find all the links in the website
 					curPage.links.each do |subLink|
 						foundLinks << curPage.uri.merge(subLink.uri)
 					end
-					#Guess pages part goes here
+					# Guess pages part goes here
 					
-					#Ensure no duplicates are in the list
+					# Ensure no duplicates are in the list
 					foundLinks = foundLinks.uniq
 				end
 			end
@@ -67,7 +64,7 @@ class PageDiscovery
 		url = link
 		url = url.to_s
 		url = URI.split(url)
-		return $domain[2] == url[2]
+		return domain[2] == url[2]
 	end
 
 	# Should this just add in all the guessed pages into 

@@ -10,34 +10,32 @@ require_relative 'displayResults'
 commands = Hash.new { |hash, key| hash[key] = 
 	"#{key} is not currently support." }
 	
-$results
-$agent
 
 def main
 	puts "Please enter: fuzz [discover | test] <url> OPTIONS"
-	
+	agent = 0
 	while true
 		input = gets.chomp
 		input = input.split
-		options = input[3:]
+		options = input[3..-1]
 		cmdLineOptions = cmdlineparsing(options)
 		if input[0] == "fuzz"
 			case input[1]
 				when /\Adiscover\z/i	
-					#Initialize the agent
-					$agent = Mechanize.new{|a| a.ssl_version, 
+					# Initialize the agent
+					agent = Mechanize.new{|a| a.ssl_version, 
 							a.verify_mode = 'SSLv3', OpenSSL::SSL::VERIFY_NONE}
-					results = Options.fuzzDiscover( $agent, input[2])
+					results = Options.fuzzDiscover( agent, input[2])
 					DisplayResults.displayInputs(results[1])
 					DisplayResults.displayForms(results[2])
 					DisplayResults.displayCookies(results[3])
 					
 				when /\Atest\z/i
-					$agent = Mechanize.new{|a| a.ssl_version, 
+					agent = Mechanize.new{|a| a.ssl_version, 
 							a.verify_mode = 'SSLv3', OpenSSL::SSL::VERIFY_NONE}
-					results = Options.fuzzDiscover( $agent, input[2])
+					results = Options.fuzzDiscover( agent, input[2])
 					
-					Options.fuzzTest( $agent, results[1], results[2], results[3])
+					Options.fuzzTest( agent, results[1], results[2], results[3])
 					DisplayResults.displayInputs(results[1])
 					DisplayResults.displayForms(results[2])
 					DisplayResults.displayCookies(results[3])
