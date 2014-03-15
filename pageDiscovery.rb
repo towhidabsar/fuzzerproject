@@ -7,9 +7,7 @@ require_relative 'customAuthentication'
 
 class PageDiscovery
 
-  @@domain = ""
-	def self.pageDiscover( agent, url )
-	
+	def self.discoverPages(agent, url)
 		# List of links found that will be traversed 
 		foundLinks = Array.new
 		
@@ -32,7 +30,7 @@ class PageDiscovery
 		
 		begin
 			foundLinks.each do |link|
-				if not (filterOffSiteLinks(link) & 
+				if not (filterOffSiteLinks(link, domain) & 
 					(visitedLinks.include? link))
 					
 					visitedLinks << link
@@ -60,10 +58,8 @@ class PageDiscovery
 	# Remove links that go offsite from given array into corresponding 
 	# array. We need to have a verify that this is actually doing what 
 	# we think it is doing
-	def self.filterOffSiteLinks(link)
-		url = link
-		url = url.to_s
-		url = URI.split(url)
+	def self.filterOffSiteLinks(link, domain)
+		url = URI.split(link.to_s)
 		return domain[2] == url[2]
 	end
 
