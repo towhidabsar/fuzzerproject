@@ -14,11 +14,9 @@ class Options
 		#Initialize the required variables
 		linkQueries = Hash.new
 		formInputs = Hash.new
-		cookies = Array.new
-		foundLinks = Array.new
 		
 		# Get all the pages in the website.
-		foundLinks = PageDiscovery.pageDiscover(agent, mainURL)
+		foundLinks = PageDiscovery.discoverPages(agent, mainURL)
 		
 		# Traverse each of the pages and find all the possible inputs.
 		foundLinks.each do |link|
@@ -44,13 +42,13 @@ class Options
      #For dvwa change cookie value, start with low, medium and then high.
      cookies.each do |cookie|
      
-       if cookie.name = "security"
+       if cookie.name == "security"
          cookie.value = curSecurity[i]
        end
      
        linkQueries.each do |link, queries|
-         agent.post( link, '>"><script>alert("XSS")</script>&"', 'Content-Type' => 'application/xml') )
-         puts agent.page.content
+         agent.post( link, '>"><script>alert("XSS")</script>&"') 
+         puts agent.page.uri
          
        end
      end
