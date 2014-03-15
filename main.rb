@@ -64,6 +64,11 @@ def cmdlineparsing( options )
 		else if command.start_with?("--slow=")
 			stringarray = command.split("=")
 			results[4] = stringarray[1]
+		end
+		end
+		end
+		end
+		end
 	end
 	return results
 end
