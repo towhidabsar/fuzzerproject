@@ -14,15 +14,13 @@ $results
 $agent
 
 def main
-	#puts "Welcome to Fuzzy, the Web Applicadtion Testing Tool."
 	puts "Please enter: fuzz [discover | test] <url> OPTIONS"
-	#puts "/tMore Options: -- "
-	#puts "/t/tcustom-auth="
 	
 	while true
 		input = gets.chomp
 		input = input.split
-		
+		options = input[3:]
+		cmdLineOptions = cmdlineparsing(options)
 		if input[0] == "fuzz"
 			case input[1]
 				when /\Adiscover\z/i	
@@ -48,6 +46,29 @@ def main
 			puts " An invalid command."
 		end
 	end
+end
+
+def cmdlineparsing( options )
+	results = [0,0,0,0,0]
+	options.each do |command|
+		if command.start_with?("--custom-auth=")
+			stringarray = command.split("=")
+			results[0] = stringarray[1]
+		else if command.start_with?("--vectors=")
+			stringarray = command.split("=")
+			results[1] = stringarray[1]
+		else if command.start_with?("--sensitive=")
+			stringarray = command.split("=")
+			results[2] = stringarray[1]
+		else if command.start_with?("--random=")
+			stringarray = command.split("=")
+			results[3] = stringarray[1]
+		else if command.start_with?("--slow=")
+			stringarray = command.split("=")
+			results[4] = stringarray[1]
+		end
+	end
+	return results
 end
 
 # if customAuth option
