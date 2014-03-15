@@ -47,8 +47,9 @@ class Options
        end
      
        linkQueries.each do |link, queries|
-         agent.post( link, '>"><script>alert("XSS")</script>&"') 
-         puts agent.page.uri
+		puts link
+        agent.post( link, '>"><script>alert("XSS")</script>&"') 
+        puts agent.page.uri
          
        end
      end
