@@ -19,7 +19,7 @@ class PageDiscovery
 		CustomAuthentication.authenticate(agent, url)
 		
 		mainPage = agent.get(url)
-		domain = URI.split(url)
+		uriArray = URI.split(url)
 		
 		foundLinks << mainPage.uri # Add the given page to the mainPage
 		
@@ -30,37 +30,36 @@ class PageDiscovery
 		
 		begin
 			foundLinks.each do |link|
-				if not (filterOffSiteLinks(link, domain) & 
-					(visitedLinks.include? link))
-					
-					visitedLinks << link
-					
-					curPage = agent.get(link)
-					
-					# Find all the links in the website
-					curPage.links.each do |subLink|
-						foundLinks << curPage.uri.merge(subLink.uri)
-					end
-					# Guess pages part goes here
-					
-					# Ensure no duplicates are in the list
-					foundLinks = foundLinks.uniq
+				visitedLinks << link
+				foundLinks.delete(link)
+				
+				curPage = agent.get(link)
+				
+				# Find all the links in the website
+				curPage.links.each do |subLink|
+					foundLinks << curPage.uri.merge(subLink.uri)
 				end
+				# Guess pages part goes here
+				
+				# Ensure no duplicates are in the list
+				foundLinks = foundLinks.uniq
+				foundLinks = filterOffSiteLinks(foundLinks, uriArray[2])
 			end
 		rescue => e
 			puts e.message
 		end
 		
-		return foundLinks
+		return visitedLinks
 	end
-
 	
-	# Remove links that go offsite from given array into corresponding 
+	# Check to see if the Remove links that go offsite from given array into corresponding 
 	# array. We need to have a verify that this is actually doing what 
 	# we think it is doing
-	def self.filterOffSiteLinks(link, domain)
-		url = URI.split(link.to_s)
-		return domain[2] == url[2]
+	def self.filterOffSiteLinks(foundLinks, host)
+		foundLinks.delete_if{ |link| 
+			(URI.split(link.to_s))[2] != host
+		 }
+		 return foundLinks
 	end
 
 	# Should this just add in all the guessed pages into 
