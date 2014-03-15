@@ -46,7 +46,7 @@ class Options
          cookie.value = curSecurity[i]
        end
      
-       linkQueries.each do |link, queries|
+       linkQueries.each_key do |link|
 		puts link
         agent.post( link, '>"><script>alert("XSS")</script>&"') 
         puts agent.page.uri
