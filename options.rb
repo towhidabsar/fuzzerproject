@@ -40,20 +40,46 @@ class Options
      curSecurity = ["low", "medium", "high"]
      i = 0
      #For dvwa change cookie value, start with low, medium and then high.
-     cookies.each do |cookie|
-     
-       if cookie.name == "security"
-         cookie.value = curSecurity[i]
-       end
-     
-       linkQueries.each_key do |link|
-		puts link
-        agent.post( link, '>"><script>alert("XSS")</script>&"') 
-        puts agent.page.uri
-         
-       end
-     end
+		while i<3
+			cookies.each do |cookie|
+			 
+				if cookie.name == "security"
+					 cookie.value = curSecurity[i]
+				end
+			end
+			
+			# Check all the link inputs with fuzz vectors.			
+		    linkQueries.each_key do |link|
+				puts link
+				agent.post( link, '>"><script>alert("XSS")</script>&"') 
+				if agent.page.body.to_s.include?( "MySQL")
+					puts "Found sensitive data"
+				end				
+		    end
+			
+			# Check all the form inputs
+			formInputs.each_key do |link|
+				puts link
+				page = agent.get( link )
+				form = page.forms.first
+				if form != nil
+					form.fields_with( :value => "").each do |field|
+						field.value = '>"><script>alert("XSS")</script>&"'
+					end
+					button = form.button_with( :value => /submit/)
+					agent.submit( form, button)
+					if agent.page.body.to_s.include?( 'alert("XSS")')
+						puts "Found sensitive data in FORMS"
+					end
+				end
+			end
+			
+			
+			
+			i = i+1
+		end
 	end
 
+		
 
 end
