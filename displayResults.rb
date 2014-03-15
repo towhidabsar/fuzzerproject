@@ -4,13 +4,13 @@ require 'uri'
 
 class DisplayResults
 
-	#Creates the arrays that are needed to hold the links
+	# Creates the arrays that are needed to hold the links
 	def self.displayInputs(links)
 		puts "\n##########################################################################"
 		puts "\tInputs via Links:"
 		puts "##########################################################################"
 		links.each do |key, value|
-			puts "Base URL : "+key
+			puts "Base URL : #{key}"
 			puts "Possible Inputs:"
 			value.each do |input|
 				puts input
@@ -18,7 +18,7 @@ class DisplayResults
 		end
 	end
 
-  #
+  # 
 	def self.displayForms(forms)
 		puts "\n##########################################################################"
 		puts "\tInputs via Forms:"
@@ -26,19 +26,19 @@ class DisplayResults
 		forms.each do |key, value|
 			puts "Page URL: #{key.to_s}"
 			value.each do |input|
-				puts "\t Name: #{input.name} - Value: #{input.value}"
-				puts "\t\tType: #{input.type}"
+				puts "\t Name: %s - Value: %s \t\tType: %s" %[input.name, input.value, input.type]
 			end
 		end
 	end
 
+  # 
 	def self.displayCookies(cookies)
 		puts "\n##########################################################################"
 		puts "\tInputs via Cookies:"
 		puts "##########################################################################"
 		
 		cookies.each do |cookie|
-			puts "Name: #{cookie.name} \tDomain Name: "+cookie.domain+"\tValue = "+cookie.value
+			puts "Name: %s \tDomain Name: %s \tValue = %s" %[cookie.name, cookie.domain, cookie.value]
 		end
 	end
 end
