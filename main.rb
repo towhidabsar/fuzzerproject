@@ -13,7 +13,6 @@ commands = Hash.new { |hash, key| hash[key] =
 
 def main
 	puts "Please enter: fuzz [discover | test] <url> OPTIONS"
-	agent = 0
 	while true
 		input = gets.chomp
 		input = input.split
