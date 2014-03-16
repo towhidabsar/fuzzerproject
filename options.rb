@@ -36,7 +36,7 @@ class Options
 	end
 	
 	def self.fuzzTest(agent, mainURL) 
-		results = fuzzDiscover( agent, input[2])
+		results = fuzzDiscover( agent, mainURL)
 		linkQueries = results[1]
 		formInputs = results[2]
 		cookies = results[3]
@@ -48,16 +48,19 @@ class Options
 			cookies.each do |cookie|
 				if cookie.name == "security"
 					 cookie.value = curSecurity[i]
+					 puts "################### SECURITY LEVEL : #{curSecurity[i]} ###################"
 				end
 			end
+			puts "############# LINK QUERIES ######################"
 			fuzzLinkQueries(agent, linkQueries, '<script>alert("XSS")</script>')
+			puts "############# FORM INPUTS ######################"
 			fuzzFormInputs(agent, formInputs, '<script>alert("XSS")</script>')
 			i += 1
 		end
 	end
 	
 	# Check all the link inputs with fuzz vectors.
-	def fuzzLinkQueries(agent, linkQueries, vector)	
+	def self.fuzzLinkQueries(agent, linkQueries, vector)	
 		linkQueries.each_key do |link|
 			puts link
 			agent.post( link, vector) 		
@@ -67,7 +70,7 @@ class Options
 		end
 	end
 	# Check all the form inputs
-	def fuzzFormInputs(agent, formInputs, vector)
+	def self.fuzzFormInputs(agent, formInputs, vector)
 		formInputs.each_key do |link|
 			puts link
 			page = agent.get( link )
@@ -86,13 +89,13 @@ class Options
 		end
 	end
 	
-	def checkSanitization( page, vector)
-		if !page.text.include?(vector.chomp) and page.html.include?(vector.chomp)
+	def self.checkSanitization( page, vector)
+		if page.body.include?(vector.chomp)
 			puts "NO SANITIZATION"
 		end
 	end
 	
-	def checkSensitiveData
+	def self.checkSensitiveData
 	
 	end
 end

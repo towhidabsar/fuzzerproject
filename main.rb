@@ -33,9 +33,6 @@ def main
 					agent = Mechanize.new{|a| a.ssl_version, 
 							a.verify_mode = 'SSLv3', OpenSSL::SSL::VERIFY_NONE}
 					Options.fuzzTest(agent, input[2])
-					DisplayResults.displayInputs(results[1])
-					DisplayResults.displayForms(results[2])
-					DisplayResults.displayCookies(results[3])
 			end
 
 		else 
