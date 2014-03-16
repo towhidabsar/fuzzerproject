@@ -4,7 +4,7 @@ require 'uri'
 require_relative 'inputValidation'
 require_relative 'inputDiscovery'
 require_relative 'customAuthentication'
-require_relative 'fuzzOptions'
+require_relative 'options'
 require_relative 'displayResults'
 
 commands = Hash.new { |hash, key| hash[key] = 
@@ -27,7 +27,7 @@ def main
 					#Initialize the agent
 					$agent = Mechanize.new{|a| a.ssl_version, 
 							a.verify_mode = 'SSLv3', OpenSSL::SSL::VERIFY_NONE}
-					results = FuzzOptions.fuzzDiscover( $agent, input[2])
+					results = Options.fuzzDiscover( $agent, input[2])
 					DisplayResults.displayInputs(results[1])
 					DisplayResults.displayForms(results[2])
 					DisplayResults.displayCookies(results[3])
@@ -35,9 +35,9 @@ def main
 				when /\Atest\z/i
 					$agent = Mechanize.new{|a| a.ssl_version, 
 							a.verify_mode = 'SSLv3', OpenSSL::SSL::VERIFY_NONE}
-					results = FuzzOptions.fuzzDiscover( $agent, input[2])
+					results = Options.fuzzDiscover( $agent, input[2])
 					
-					FuzzOptions.fuzzTest( $agent, results[1], results[2], results[3])
+					Options.fuzzTest( $agent, results[1], results[2], results[3])
 					DisplayResults.displayInputs(results[1])
 					DisplayResults.displayForms(results[2])
 					DisplayResults.displayCookies(results[3])

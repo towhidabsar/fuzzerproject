@@ -7,7 +7,7 @@ require_relative 'customAuthentication'
 require_relative 'displayResults'
 require_relative 'pageDiscovery'
 
-class FuzzOptions
+class Options
 
 	def self.fuzzDiscover( agent, mainURL)
 	
@@ -17,23 +17,19 @@ class FuzzOptions
 		cookies = Array.new
 		foundLinks = Array.new
 		
-		#Get all the pages in the website.
+		# Get all the pages in the website.
 		foundLinks = PageDiscovery.pageDiscover( agent, mainURL )
 		
-		#Traverse each of the pages and find all the possible inputs.
+		# Traverse each of the pages and find all the possible inputs.
 		foundLinks.each do |link|
-			#Get the current page for the link
+			# Get the current page for the link
 			curPage = agent.get(link)
-			#Get the host of the link i.e. localhost/a 
-			#curHost = curPage.uri.host
-			#Get all the input forms in the page.
-			pageForms = curPage.forms
 			
-			#Get all the queries in the link
+			# Get all the queries in the link
 			linkQueries = InputDiscovery.discoverQueries(curPage, linkQueries)
 			
-			#Get all the input forms in the page
-			formInputs = InputDiscovery.discoverForms(pageForms, link, formInputs)
+			# Get all the input forms in the page
+			formInputs = InputDiscovery.discoverForms(curPage, formInputs)
 		end
 		
 		cookies = InputDiscovery.discoverCookies(agent, cookies)

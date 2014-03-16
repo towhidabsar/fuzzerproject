@@ -15,19 +15,19 @@ class InputDiscovery
 		# All the queries from the given page
 		pageQueries = page.uri.query
 
-		# The host name of the uri
-		host = page.uri.host # i.e. 'localhost/a'
+		# The uri of the page
+		uri = page.uri # i.e. 'localhost/a/efefefwfqwe'
 
 		# Check to see if given host is in the hash map
-		if not linkQueries.has_key? host
-			linkQueries[host] = Array.new
+		if not linkQueries.has_key? uri
+			linkQueries[uri] = Array.new
 		end
 
 		if not pageQueries == nil
 			pageQueries = pageQueries.split("&")
 			# Traverse each query in pageQueries & append to it's array
 			pageQueries.each do |query|
-				linkQueries[host] << query
+				linkQueries[uri] << query
 			end
 		end
 		return linkQueries
@@ -39,17 +39,23 @@ class InputDiscovery
 	# +host+:: The host name of the uri
 	# +linkInputs+:: +Hash+ object of [link, queries]
 	# Return: Updated +formInputs+ with forms from the given +page+
-	def self.discoverForms(pageForms, link, formInputs)
+	def self.discoverForms(page, formInputs)
+
+		# Get all the input forms in the page.
+		pageForms = page.forms
+
+		# The uri of the page
+		uri = page.uri # i.e. 'localhost/a/efefefwfqwe'
 
 		# Check to see if given host is in the hash map
-		if not formInputs.has_key? link
-			formInputs[link] = Array.new
+		if not formInputs.has_key? uri
+			formInputs[uri] = Array.new
 		end
 		
 		# Traverse each form in pageForms & add it to it's array
 		pageForms.each do |form|
-			formInputs[link].concat(form.fields)
-			formInputs[link].concat(form.buttons)
+			formInputs[uri].concat(form.fields)
+			formInputs[uri].concat(form.buttons)
 		end
 		
 		return formInputs
