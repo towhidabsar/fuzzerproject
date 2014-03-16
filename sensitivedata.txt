@@ -1,0 +1,13 @@
+phone
+credit
+password
+pass
+word
+id
+admin
+config
+script
+javascript
+java
+mysql
+sql
