@@ -54,7 +54,7 @@ def cmdlineparsing( options )
 				results[1] = stringarray[1]
 			when command.start_with?("--sensitive=")
 				stringarray = command.split("=")
-				results[1] = stringarray[1]
+				results[2] = stringarray[1]
 			when command.start_with?("--random=")
 				stringarray = command.split("=")
 				results[3] = stringarray[1]

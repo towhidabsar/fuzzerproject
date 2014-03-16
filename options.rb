@@ -10,7 +10,16 @@ require_relative 'vectors'
 
 class Options
 
+	#This class variables store the final results of the fuzz.
+	@@finalResultSanitization
+	@@finalResultSensitive
+	@@sensitveData
 	def self.fuzzDiscover(agent, mainURL, customAuth)
+		
+		@@finalResultSanitization = Array.new
+		@@finalResultSensitive = Array.new
+		@@finalResultSanitization[0] = "Lack of Sanitization In:"
+		@@finalResultSensitive[0] = "Sensitive Data Found In:"
 		
 		#Authenticate using the custom authentication string
 		CustomAuthentication.authenticate(agent, mainURL, customAuth)
@@ -45,18 +54,26 @@ class Options
 		customAuth = cmdLineOptions[0]
 		vectorFile = cmdLineOptions[1]
 		sensitiveFile = cmdLineOptions[2]
+		puts sensitiveFile
 		random = cmdLineOptions[3]
-		slow = cmdLineOptions[4]
+		@@slow = cmdLineOptions[4]
 		
+		#The default slow time is 500
+		if @@slow == 0
+			@@slow = 500
+		end
 		#Create the vector object that contains the list of all the
 		#vectors to be fuzzed.
 		vectors = Vector.new(vectorFile)
 		
-		#Run fuzz discover first, get all the results.
-		results = fuzzDiscover( agent, mainURL, customAuth)
-		linkQueries = results[1]
-		formInputs = results[2]
-		cookies = results[3]
+		#Create the array of sensitive data.
+		@@sensitiveData = File.readlines(sensitiveFile).map{|line| line.strip}
+		
+		#Run fuzz discover first, get all the inputs.
+		inputs = fuzzDiscover( agent, mainURL, customAuth)
+		linkQueries = inputs[1]
+		formInputs = inputs[2]
+		cookies = inputs[3]
 		
 		#This is custom for dvwa. It has been hard coded temporarily.
 		#It will still work for other websites, but just go through
@@ -69,8 +86,7 @@ class Options
 			cookies.each do |cookie|
 				if cookie.name == "security"
 					 cookie.value = curSecurity[i]
-					 puts "################### SECURITY LEVEL :
-					 #{curSecurity[i]} ###################"
+					 puts "################### SECURITY LEVEL :#{curSecurity[i]} ###################"
 				end
 			end
 			puts "############# LINK QUERIES ######################"
@@ -79,6 +95,8 @@ class Options
 			fuzzFormInputs(agent, formInputs, vectors)
 			i += 1
 		end
+		puts @@finalResultSanitization
+		puts @@finalResultSensitive
 	end
 	
 	# Check all the link queries with fuzz vectors.
@@ -89,11 +107,7 @@ class Options
 			vector = vectorList.next_fuzzVector
 			#Go through the list of queries with one specific vector
 			linkQueries.each_key do |link|
-				puts link
-				agent.post( link, vector) 		
-				start_time = Time.now
-				checkSanitization( agent.page, vector)
-				wait_time = Time.now - start_time
+				testInput( true, link, agent, vector)
 			end
 		end
 		#After parsing reset the vector count.
@@ -108,23 +122,11 @@ class Options
 			vector = vectorList.next_fuzzVector
 			#Go through the list of inputs with one specific vector
 			formInputs.each_key do |link|
-				puts link
-				page = agent.get( link )
-				form = page.forms.first
-				if form != nil
-					form.fields_with( :value => "").each do |field|
-						field.value = vector
-					end
-					button = form.button_with( :value => /submit/)
-					agent.submit( form, button)
-					start_time = Time.now
-					checkSanitization( agent.page, vector)
-					wait_time = Time.now - start_time
-				end
+				testInput( false, link, agent, vector)
 			end
 		end
 		#After parsing reset the vector count.
-		vectorList.reset_count!	
+		vectorList.reset_count!
 	end
 	
 	
@@ -135,13 +137,59 @@ class Options
 	as sanitized input, response time limits, sensitive data
 	not leaked etc.
 =end
+
+	#This method is responsible for performing the actual tests
+	def self.testInput(type, link, agent, vector)
+		
+		start_time = 0
+		if type
+			#Record the start_time
+			start_time = Time.now
+			agent.post( link, vector) 		
+		else
+			#Get the page and the forms
+			page = agent.get( link )
+			form = page.forms.first
+			#If there is a form in the page
+			if form != nil
+				#Input vector into the fields
+				form.fields_with( :value => "").each do |field|
+					field.value = vector
+				end
+				#Submit the form
+				button = form.button_with( :value => /submit/)
+				#Record the start_time
+				start_time = Time.now
+				agent.submit( form, button)
+			end
+		end
+		
+		#Check the time it took to complete the request.
+		wait_time = Time.now - start_time
+		
+		#Check the sanitization of input.
+		#Check whether any sensitive data is leaked.
+		checkSanitization( agent.page, vector)
+		checkSensitiveData( agent.page )
+		
+		puts wait_time
+		if wait_time * 1000 > @@slow
+			puts "Possible DOS attack here"
+		end
+	end
+		
 	def self.checkSanitization( page, vector)
 		if page.body.include?(vector.chomp)
-			puts "NO SANITIZATION"
+			@@finalResultSanitization << "Link: #{page.uri}"
 		end
 	end
 	
-	def self.checkSensitiveData
-	
+	def self.checkSensitiveData(page)
+		@@sensitiveData.each do |data|
+			if page.content.include?(data)
+				@@finalResultSensitive << "Link: #{page.uri} contains #{data}"
+			end
+		end
 	end
+	
 end

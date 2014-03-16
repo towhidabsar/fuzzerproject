@@ -16,7 +16,7 @@ class Vector
     attack = @fuzzVector
     @fuzzVector.rotate!
 	@count += 1
-    return attack
+    return attack[0]
   end
   
   #Reset the count so that has_next? works multiple times.
