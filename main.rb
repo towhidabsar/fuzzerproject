@@ -24,7 +24,7 @@ def main
 					# Initialize the agent
 					agent = Mechanize.new{|a| a.ssl_version, 
 							a.verify_mode = 'SSLv3', OpenSSL::SSL::VERIFY_NONE}
-					results = Options.fuzzDiscover( agent, input[2])
+					results = Options.fuzzDiscover(agent, input[2])
 					DisplayResults.displayInputs(results[1])
 					DisplayResults.displayForms(results[2])
 					DisplayResults.displayCookies(results[3])
@@ -32,13 +32,12 @@ def main
 				when /\Atest\z/i
 					agent = Mechanize.new{|a| a.ssl_version, 
 							a.verify_mode = 'SSLv3', OpenSSL::SSL::VERIFY_NONE}
-					results = Options.fuzzDiscover( agent, input[2])
-					
-					Options.fuzzTest( agent, results[1], results[2], results[3])
+					Options.fuzzTest(agent, input[2])
 					DisplayResults.displayInputs(results[1])
 					DisplayResults.displayForms(results[2])
 					DisplayResults.displayCookies(results[3])
 			end
+
 		else 
 			puts " An invalid command."
 		end
@@ -48,42 +47,27 @@ end
 def cmdlineparsing( options )
 	results = [0,0,0,0,0]
 	options.each do |command|
-		if command.start_with?("--custom-auth=")
-			stringarray = command.split("=")
-			results[0] = stringarray[1]
-		else if command.start_with?("--vectors=")
-			stringarray = command.split("=")
-			results[1] = stringarray[1]
-		else if command.start_with?("--sensitive=")
-			stringarray = command.split("=")
-			results[2] = stringarray[1]
-		else if command.start_with?("--random=")
-			stringarray = command.split("=")
-			results[3] = stringarray[1]
-		else if command.start_with?("--slow=")
-			stringarray = command.split("=")
-			results[4] = stringarray[1]
-		end
-		end
-		end
-		end
+		# Note -- Planned on writing code to make this less redundant
+		case 
+			when command.start_with?("--custom-auth=")
+				stringarray = command.split("=")
+				results[0] = stringarray[1]
+			when command.start_with?("--vectors=")
+				stringarray = command.split("=")
+				results[1] = stringarray[1]
+			when command.start_with?("--sensitive=")
+				stringarray = command.split("=")
+				results[1] = stringarray[1]
+			when command.start_with?("--random=")
+				stringarray = command.split("=")
+				results[3] = stringarray[1]
+			when command.start_with?("--slow=")
+				stringarray = command.split("=")
+				results[4] = stringarray[1]
 		end
 	end
 	return results
 end
-
-# if customAuth option
-# 	customAuth(link)
-# linkDiscover(link)
-
-#linkQueries = new Array ...
-#formInputs = new..
-#linkCookies = new...
-
-#loop
-# linkQueries = inputDiscovery.link
-# formInputs = inputDiscovery.forms
-# linkCookies = inputDiscovery.cookies
 
 main
 puts "THE END"

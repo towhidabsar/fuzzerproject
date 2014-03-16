@@ -41,4 +41,8 @@ class DisplayResults
 			puts "Name: %s \tDomain Name: %s \tValue = %s" %[cookie.name, cookie.domain, cookie.value]
 		end
 	end
+
+	def self.displayTestResults()
+
+	end
 end

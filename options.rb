@@ -35,7 +35,11 @@ class Options
 		return [foundLinks, linkQueries, formInputs, cookies] 
 	end
 	
-	def self.fuzzTest( agent, linkQueries, formInputs, cookies)
+	def self.fuzzTest(agent, mainURL) 
+		results = fuzzDiscover( agent, input[2])
+		linkQueries = results[1]
+		formInputs = results[2]
+		cookies = results[3]
  
      curSecurity = ["low", "medium", "high"]
      i = 0
@@ -73,10 +77,7 @@ class Options
 					end
 				end
 			end
-			
-			
-			
-			i = i+1
+			i += 1
 		end
 	end
 
