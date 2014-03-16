@@ -13,15 +13,13 @@ class PageDiscovery
 		
 		# List of links already visited. Used to prevent repeated traversals.
 		visitedLinks = Array.new
-		
-		# Authenticate to given link -- move to main
+		#Show that the crawling started
 		puts "\n\tCrawling <#{url}>\n"
-		CustomAuthentication.authenticate(agent, url)
-		
 		mainPage = agent.get(url)
 		uriArray = URI.split(url)
 		
-		foundLinks << mainPage.uri # Add the given page to the mainPage
+		# Add the given page to the mainPage
+		foundLinks << mainPage.uri 
 		
 		# Find all the links in the given page
 		mainPage.links.each do |link|
