@@ -1,15 +1,11 @@
-require 'mechanize'
-require 'rubygems'
-require 'uri'
-
-class DisplayResults
+module DisplayResults
 
 	# Creates the arrays that are needed to hold the links
-	def self.displayInputs(links)
-		puts "\n##########################################################################"
-		puts "\tInputs via Links:"
-		puts "##########################################################################"
-		links.each do |key, value|
+	def displayInputs
+		puts "\n##############################################"
+		puts "\t\tQueries"
+		puts "\n##############################################"
+		@links.each do |key, value|
 			puts "Base URL : #{key}"
 			puts "Possible Inputs:"
 			value.each do |input|
@@ -19,30 +15,40 @@ class DisplayResults
 	end
 
   # 
-	def self.displayForms(forms)
-		puts "\n##########################################################################"
-		puts "\tInputs via Forms:"
-		puts "##########################################################################"
-		forms.each do |key, value|
-			puts "Page URL: #{key.to_s}"
+	def displayForms
+		puts "\n##############################################"
+		puts "\t\tForms"
+		puts "\n##############################################"
+		@forms.each do |key, value|
+			puts "\nPage URL: #{key.to_s}"
 			value.each do |input|
-				puts "\t Name: %s - Value: %s \t\tType: %s" %[input.name, input.value, input.type]
+				puts "\tName: %s \n\t   Value: %s \n\t   Type:
+				 %s" %[input.name, input.value, input.type]
 			end
 		end
 	end
 
   # 
-	def self.displayCookies(cookies)
-		puts "\n##########################################################################"
-		puts "\tInputs via Cookies:"
-		puts "##########################################################################"
+	def displayCookies
+		puts "\n##############################################"
+		puts "\t\tCookies"
+		puts "\n##############################################"
 		
-		cookies.each do |cookie|
-			puts "Name: %s \tDomain Name: %s \tValue = %s" %[cookie.name, cookie.domain, cookie.value]
+		prevDom = ""
+
+		@cookies.each do |cookie|
+			if(cookie.domain != prevDom)
+				puts "Domain Name: #{cookie.domain}"
+				prevDom = cookie.domain
+			end
+			puts "\tName: %s \n\t   Value: %s" 
+				%[@cookie.name, @cookie.value]
 		end
 	end
 
-	def self.displayTestResults()
+	def displayTestResults
 
 	end
-end
+end 
+
+#/~bx5647/courses/plc/06-js
