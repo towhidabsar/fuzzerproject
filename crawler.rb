@@ -65,10 +65,14 @@ class Crawler
 	include Test
 	include DiplayResults
 
-	def initialize (opts = {})
+	
+
+	def initialize
 		@agent = Mechanize.new{|a| a.ssl_version, 
 			a.verify_mode = 'SSLv3', OpenSSL::SSL::VERIFY_NONE}
-		@curPage 
+		@curPage = nil 
+		@host = nil
+		# List of links found that will be traversed 
 		@foundLinks = Array.new
 		@linkQueries = Hash.new		# Not sure to rename
 		@formInputs = Hash.new		# Rename to foundInputs
@@ -81,8 +85,11 @@ class Crawler
 
 	end
 
-	def crawl()	# take in input
+	def crawl(link, opts = {})	# take in input
+		@curPage = @agent.get(link)
+		@
 
+		discoverPages
 	end
 
 	def test
