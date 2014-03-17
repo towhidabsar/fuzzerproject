@@ -5,18 +5,18 @@ require_relative 'inputValidation'
 require_relative 'inputDiscovery'
 require_relative 'customAuthentication'
 
-class PageDiscovery
+module PageDiscovery
 
-	def self.discoverPages(agent, url)
+	def discoverPages(agent, url)
 		# List of links found that will be traversed 
 		foundLinks = Array.new
 		
 		# List of links already visited. Used to prevent repeated traversals.
 		visitedLinks = Array.new
+		uri = URI(url)
 		#Show that the crawling started
 		puts "\n\tCrawling <#{url}>\n"
-		mainPage = agent.get(url)
-		uriArray = URI.split(url)
+		mainPage = @agent.get(url)
 		
 		# Add the given page to the mainPage
 		foundLinks << mainPage.uri 
@@ -31,7 +31,7 @@ class PageDiscovery
 				visitedLinks << link
 				foundLinks.delete(link)
 				
-				curPage = agent.get(link)
+				curPage = @agent.get(link)
 				
 				# Find all the links in the website
 				curPage.links.each do |subLink|
@@ -41,7 +41,7 @@ class PageDiscovery
 				
 				# Ensure no duplicates are in the list
 				foundLinks = foundLinks.uniq
-				foundLinks = filterOffSiteLinks(foundLinks, uriArray[2])
+				foundLinks = filterOffSiteLinks(foundLinks, uri.Host)
 			end
 		rescue => e
 			puts e.message
@@ -53,8 +53,8 @@ class PageDiscovery
 	# Check to see if the Remove links that go offsite from given array into corresponding 
 	# array. We need to have a verify that this is actually doing what 
 	# we think it is doing
-	def self.filterOffSiteLinks(foundLinks, host)
-		foundLinks.delete_if{ |link| 
+	def filterOffSiteLinks(foundLinks, host)
+		@foundLinks.delete_if{ |link| 
 			(URI.split(link.to_s))[2] != host
 		 }
 		 return foundLinks
@@ -63,7 +63,7 @@ class PageDiscovery
 	# Should this just add in all the guessed pages into 
 	# or also validate those pages?
 	# or ??? (insert suggestions)
-	def self.guessPages(url)
+	def guessPages(url)
 		extensions = ['.php', '.jsp', '.txt', '.html', '.htm']
 		words = Array.new
 		testURLs = Array.new
