@@ -7,57 +7,47 @@ require_relative 'customAuthentication'
 
 module PageDiscovery
 
-	def discoverPages(agent, url)
-		# List of links found that will be traversed 
-		foundLinks = Array.new
-		
-		# List of links already visited. Used to prevent repeated traversals.
-		visitedLinks = Array.new
-		uri = URI(url)
-		#Show that the crawling started
-		puts "\n\tCrawling <#{url}>\n"
-		mainPage = @agent.get(url)
-		
-		# Add the given page to the mainPage
-		foundLinks << mainPage.uri 
+	def discoverPages		
+		# Add the given page to the foundLinks
+		@foundLinks << curPage.uri 
 		
 		# Find all the links in the given page
-		mainPage.links.each do |link|
-			foundLinks << mainPage.uri.merge(link.uri)
+		@curPage.links.each do |link|
+			@foundLinks << @curPage.uri.merge(link.uri)
 		end
 		
 		begin
-			foundLinks.each do |link|
-				visitedLinks << link
-				foundLinks.delete(link)
+			@foundLinks.each do |link|
+				@visitedLinks << link
+				@foundLinks.delete(link)
 				
-				curPage = @agent.get(link)
+				@curPage = @agent.get(link)
 				
 				# Find all the links in the website
 				curPage.links.each do |subLink|
-					foundLinks << curPage.uri.merge(subLink.uri)
+					@foundLinks << curPage.uri.merge(subLink.uri)
 				end
-				# Guess pages part goes here
-				
+
+				guessPages
+
 				# Ensure no duplicates are in the list
-				foundLinks = foundLinks.uniq
-				foundLinks = filterOffSiteLinks(foundLinks, uri.Host)
+				@foundLinks = @foundLinks.uniq
+
+				# Ensure there are no 
+				filterOffSiteLinks
 			end
 		rescue => e
 			puts e.message
 		end
-		
-		return visitedLinks
 	end
 	
 	# Check to see if the Remove links that go offsite from given array into corresponding 
 	# array. We need to have a verify that this is actually doing what 
 	# we think it is doing
-	def filterOffSiteLinks(foundLinks, host)
+	def filterOffSiteLinks
 		@foundLinks.delete_if{ |link| 
-			(URI.split(link.to_s))[2] != host
+			(URI.split(link.to_s))[2] != @host
 		 }
-		 return foundLinks
 	end
 
 	# Should this just add in all the guessed pages into 

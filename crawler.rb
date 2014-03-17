@@ -82,7 +82,7 @@ class Crawler
 	end
 
 	def authenticate
-
+		@agent.add_auth(http://127.0.0.1/dvwa)
 	end
 
 	def crawl(link, opts = {})	# take in input
