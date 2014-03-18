@@ -3,14 +3,14 @@ require 'rubygems'
 require 'uri'
 
 # Discovers all the inputs in the page
-class InputDiscovery
+module InputDiscovery
 
 	# Parses the given url to find possible input queries
 	# Params:
 	# +page+:: The +Page+ which to crawl for queries
 	# +linkQueries+:: +Hash+ object of [link, queries]
 	# Return: Updated +linkInputs+ with queries from the given +page+
-	def self.discoverQueries(page, linkQueries)
+	def discoverQueries(page)
 		
 		# All the queries from the given page
 		pageQueries = page.uri.query
@@ -38,7 +38,7 @@ class InputDiscovery
 	# +page+:: Acquires the forms and +URI+
 	# +formInputs+:: +Hash+ object of [link, queries]
 	# Return: Updated +formInputs+ with forms from the given +page+
-	def self.discoverForms(page, formInputs)
+	def discoverForms(page)
 
 		# Get all the input forms in the page.
 		pageForms = page.forms
@@ -52,7 +52,7 @@ class InputDiscovery
 		end
 		
 		# Traverse each form in pageForms & add it to it's array
-		pageForms.each do |form|
+		@pageForms.each do |form|
 			formInputs[uri].concat(form.fields)
 			formInputs[uri].concat(form.buttons)
 		end
@@ -65,7 +65,7 @@ class InputDiscovery
 	# Params:
 	# +agent+:: 
 	# Return: Updated +cookieInputs+ with cookies from the browser
-	def self.discoverCookies(agent)
-		return agent.cookies
+	def discoverCookies
+		@cookies << agent.cookies
 	end
 end

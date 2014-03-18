@@ -63,9 +63,7 @@ class Crawler
 	include DiscoverPages
 	include DiscoverInputs
 	include Test
-	include DiplayResults
-
-	
+	include DiplayResults	
 
 	def initialize
 		@agent = Mechanize.new{|a| a.ssl_version, 
@@ -74,22 +72,52 @@ class Crawler
 		@host = nil
 		# List of links found that will be traversed 
 		@foundLinks = Array.new
+		@visitedLists = Array.new
 		@linkQueries = Hash.new		# Not sure to rename
 		@formInputs = Hash.new		# Rename to foundInputs
 		@cookies = Array.new		# Rename to cookies
 		@speed
 
+
 	end
 
-	def authenticate
-		@agent.add_auth(http://127.0.0.1/dvwa)
-	end
+	def authenticate url
+		@agent.add_auth(http://127.0.0.1/dvwa, , )
+	end..
 
 	def crawl(link, opts = {})	# take in input
 		@curPage = @agent.get(link)
-		@
+		@host = curPage.uri.host
+		
+		puts "\n\tCrawling <#{link}>\n"
 
-		discoverPages
+		discoverPages(link)
+
+		
+		@@finalResultSanitization = Array.new
+		@@finalResultSensitive = Array.new
+		@@finalResultSanitization[0] = "Lack of Sanitization In:"
+		@@finalResultSensitive[0] = "Sensitive Data Found In:"
+		
+		# Get all the pages in the website.
+		discoverPages(mainURL)
+		
+		# Traverse each of the pages and find all the possible inputs.
+		foundLinks.each do |link|
+			# Get the current page for the link
+			@curPage = agent.get(link)
+			
+			# Get all the queries in the link
+			discoverQueries(curPage)
+			
+			# Get all the input forms in the page
+			discoverForms(curPage)
+		end
+		
+		cookies = discoverCookies(agent)
+		
+		return [foundLinks, linkQueries, formInputs, cookies] 
+
 	end
 
 	def test
