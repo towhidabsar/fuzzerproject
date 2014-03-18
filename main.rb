@@ -30,7 +30,7 @@ end
 
 #
 def optionsParsing(rawOptions)
-	options: {
+	options = {
 		customAuth: "",
 		vectorsFile: "vectors-small.txt",
 		sensitiveFile: "sensitive-data.txt",
@@ -39,7 +39,7 @@ def optionsParsing(rawOptions)
 	}
 	rawOptions.each do |command|
 		case 
-			when command.start_with?("--custom-auth="
+			when command.start_with?("--custom-auth=")
 				notEmptyAdd(:customAuth, command)
 			when command.start_with?("--vectors=")
 				notEmptyAdd(:vectorsFile, command)
