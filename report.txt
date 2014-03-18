@@ -1,0 +1,45 @@
+Lack of Sanitization count:
+10
+
+Sensitive Data Report:
+
+ phone found in 0 instances
+
+ credit found in 0 instances
+
+ password found in 12 instances
+
+ pass found in 26 instances
+
+ word found in 24 instances
+
+ id found in 288 instances
+
+ admin found in 288 instances
+
+ config found in 0 instances
+
+ script found in 576 instances
+
+ mySQL found in 0 instances
+
+ MySQL found in 0 instances
+
+ mysql found in 0 instances
+
+ 404 found in 0 instances
+
+ php found in 0 instances
+
+ javascript found in 288 instances
+
+ apache found in 0 instances
+
+ tomcat found in 0 instances
+
+ xampp found in 0 instances
+
+Number of Denial of Service Possibilities:
+0
+HTTPErrorCodes:
+["####################################\nHTTP ERROR CODES:\n####################################\n"] found in 0 instances

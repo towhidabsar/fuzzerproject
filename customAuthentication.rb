@@ -1,42 +1,20 @@
 require 'rubygems'
 require 'mechanize'
 
-#to a given product. For this product, BodgeIt and DVWA are two 
-#applications you must authenticate to. These can be hardcoded. You 
-#are welcome to add other customizations for other products to test
-# your fuzzer further (e.g. your senior project). With custom 
-# authentication turned off, the fuzzer should just crawl the exterior
-#  of the webapp (perhaps get lucky if the vector list had a password)
-class CustomAuthentication
-	def self.authenticate(agent, site, customAuth)
-		agent.get(site) do |page|
-			puts page
-			#login_page = agent.click(page.link_with(:text => site))
-			case customAuth
-				when "dvwa"
-					# Submit the login form
-					login_form = page.form_with(:action => 'login.php')
-					login_form.username = "admin"
-					login_form.password = "password"
-					agent.submit(login_form, login_form.buttons.first)
 
-				when "bodgeit"
-					login_page = agent.click(page.link_with(:text => /Login/))	
-					login_form = login_page.form_with(:action => '/login.jsp')
-					login_form.username = "test@thebodgeitstore.com"
-					login_form.password = "password"
-					agent.submit(login_form, login_form.buttons.first)
-			end
+class CustomAuthentication
+	def self.authenticate(agent, link, customAuth)
+		case customAuth
+			when "dvwa"
+				page = agent.get(link)
+				username = "admin"
+			when "bodgeit"
+				page = agent.click(agent.get(link).link_with(:text => /Login/))	
+				username = "test@thebodgeitstore.com"
 		end
+		login_form = page.forms.first
+		login_form.username = username
+		login_form.password = "password"
+		agent.submit(login_form, login_form.buttons.first)
 	end
 end
-
-#low priority
-#Simple refactor
-# traverse given link for a specified type of input field ( i.e. username / password & submit button)
-# hardcode credentials for dvwa and bodgeit (already have)
-# return success status (boolean)
-
-
-#if we really want, we could pass in a user name and password 
-#for it to authenticate with (if we wish to)
