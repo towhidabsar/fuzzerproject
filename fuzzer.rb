@@ -9,7 +9,7 @@ class Fuzzer
 		@slow = options[:slow]
 		@customAuth = options[:customAuth]
 		@sensitiveFile = options[:sensitiveFile]
-		@vectorFile = options[:vectorFile]
+		@vectorFile = options[:vectorsFile]
 
 		@vectors = Vectors.new(@vectorFile)
 		@sensitiveData = File.readlines(@sensitiveFile).map{|line| line.strip} 
