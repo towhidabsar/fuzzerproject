@@ -17,6 +17,7 @@ def main
 					exit
 			end
 
+			@options
 			splitInput = input[3..-1]
 			opts = optionsParsing(splitInput)
 
@@ -30,7 +31,7 @@ end
 
 #
 def optionsParsing(rawOptions)
-	options = {
+	@options = {
 		customAuth: "",
 		vectorsFile: "vectors-small.txt",
 		sensitiveFile: "sensitive-data.txt",
@@ -58,7 +59,7 @@ end
 def notEmptyAdd sym, command
 	splitCommand = command.split("=")
 	if splitCommand[1] != nil || splitCommand[1] != ""
-		options[sym => splitCommand[1]]
+		@options[sym => splitCommand[1]]
 	end
 end
 
