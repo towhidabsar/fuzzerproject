@@ -1,6 +1,7 @@
 # 
 module PageDiscovery
 
+	#
 	def discoverPages	
 		@foundLinks << curPage.uri	
 		begin

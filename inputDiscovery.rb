@@ -2,10 +2,6 @@
 module InputDiscovery
 
 	# Parses the given url to find possible input queries
-	# Params:
-	# +page+:: The +Page+ which to crawl for queries
-	# +linkQueries+:: +Hash+ object of [link, queries]
-	# Return: Updated +linkInputs+ with queries from the given +page+
 	def discoverQueries
 		# All the queries from the given page
 		pageQueries = page.uri.query
@@ -25,10 +21,6 @@ module InputDiscovery
 	end 
 
 	# Parses the given list of forms & add them to the given hash map
-	# Params:
-	# +page+:: Acquires the forms and +URI+
-	# +formInputs+:: +Hash+ object of [link, queries]
-	# Return: Updated +formInputs+ with forms from the given +page+
 	def discoverForms
 		# Check to see if given host is in the hash map
 		if not @formInputs.has_key? page.uri
@@ -44,9 +36,6 @@ module InputDiscovery
 
 	# Acquires the browsers cookies via the given +agent+ & adds it to
 	# 	the given array
-	# Params:
-	# +agent+:: 
-	# Return: Updated +cookieInputs+ with cookies from the browser
 	def discoverCookies
 		@cookies << agent.cookies
 	end
