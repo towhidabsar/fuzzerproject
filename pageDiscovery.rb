@@ -1,3 +1,4 @@
+# 
 module PageDiscovery
 
 	def discoverPages	
@@ -10,7 +11,7 @@ module PageDiscovery
 					# Merge in-case relative relative
 					@foundLinks << @curPage.uri.merge(subLink.uri)
 				end
-				
+
 				guessPages(link)
 
 				# Ensure no duplicates are in the list
