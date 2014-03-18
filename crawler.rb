@@ -78,16 +78,13 @@ class Crawler
 		@linkQueries = Hash.new
 		@formInputs = Hash.new		
 		@cookies = Array.new	
-		@possibleDOS = ["########\nPossible DOS in:\n##########\n"]
-		@finalResultSanitization = ["Lack of Sanitization in:\n"]
-		@finalResultSensitive = ["Sensitive Data in:\n"]
-		@HTTPErrorCodes  ["#########\nHTTP ERROR CODES:\n############\n"]
 
-		@opts: {
+
+		@options: {
 			vectorsFile: "vectors-small.txt"
 			sensitiveFile: "sensitive-data.txt"
-
-
+			speed: 500
+			random: 0
 		}
 	end
 
@@ -135,10 +132,6 @@ class Crawler
 		ResultsOutput.printQueries(linkQueries)
 		ResultsOutput.printForms(formInputs)
 		ResultsOutput.printCookies(cookies)
-	end
-
-	def fuzz
-
 	end
 end
 
