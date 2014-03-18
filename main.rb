@@ -1,12 +1,3 @@
-require 'mechanize'
-require 'rubygems'
-require 'uri'
-require_relative 'inputValidation'
-require_relative 'inputDiscovery'
-require_relative 'customAuthentication'
-require_relative 'options'
-require_relative 'displayResults'
-
 commands = Hash.new { |hash, key| hash[key] = 
 	"#{key} is not currently support." }
 	
@@ -14,56 +5,61 @@ commands = Hash.new { |hash, key| hash[key] =
 def main
 	puts "Please enter: fuzz [discover | test] <url> OPTIONS"
 	while true
-		input = gets.chomp
-		input = input.split
-		options = input[3..-1]
-		cmdLineOptions = cmdlineparsing(options)
-		if input[0] == "fuzz"
+		input = gets.chomp.split
+
+		if(input[0].downcase == "fuzz")
 			case input[1]
-				when /\Adiscover\z/i	
-					# Initialize the agent
-					agent = Mechanize.new{|a| a.ssl_version, 
-							a.verify_mode = 'SSLv3', OpenSSL::SSL::VERIFY_NONE}
-					results = Options.fuzzDiscover(agent, input[2], cmdLineOptions)
-					DisplayResults.displayInputs(results[1])
-					DisplayResults.displayForms(results[2])
-					DisplayResults.displayCookies(results[3])
-					
-				when /\Atest\z/i
-					agent = Mechanize.new{|a| a.ssl_version, 
-							a.verify_mode = 'SSLv3', OpenSSL::SSL::VERIFY_NONE}
-					Options.fuzzTest(agent, input[2], cmdLineOptions)
+				when  /\Adiscover\z/i
+					test? = false
+				when  /\Atest\z/i
+					test? = true
+				when  /\Aexit\z/i	
+					exit
 			end
 
-		else 
-			puts " An invalid command."
+			splitInput = input[3..-1]
+			opts = optionsParsing(splitInput)
+
+			crawler = Crawler.new(opts, input[2])
+			crawler.crawl(test?)
+		else
+			puts "Invalid Command #{input[0]}"
 		end
 	end
 end
 
-def cmdlineparsing( options )
-	results = [0,0,0,0,0]
-	options.each do |command|
-		# Note -- Planned on writing code to make this less redundant
+#
+def optionsParsing(rawOptions)
+	options = {
+		customAuth: ""
+		vectorsFile: "vectors-small.txt"
+		sensitiveFile: "sensitive-data.txt"
+		slow: 500
+		random: 0
+	}
+	rawOptions.each do |command|
 		case 
-			when command.start_with?("--custom-auth=")
-				stringarray = command.split("=")
-				results[0] = stringarray[1]
+			when command.start_with?("--custom-auth="
+				notEmptyAdd(:customAuth:, command)
 			when command.start_with?("--vectors=")
-				stringarray = command.split("=")
-				results[1] = stringarray[1]
+				notEmptyAdd(:vectorsFile, command)
 			when command.start_with?("--sensitive=")
-				stringarray = command.split("=")
-				results[2] = stringarray[1]
+				notEmptyAdd(:sensitiveFile, command)
 			when command.start_with?("--random=")
-				stringarray = command.split("=")
-				results[3] = stringarray[1]
+				notEmptyAdd(:random, command)
 			when command.start_with?("--slow=")
-				stringarray = command.split("=")
-				results[4] = stringarray[1]
+				notEmptyAdd(:slow, command)
 		end
 	end
-	return results
+	return options
+end
+
+#
+def notEmptyAdd sym, command
+	splitCommand = command.split("=")
+	if splitCommand[1] != nil || splitCommand[1] != ""
+		options[sym => splitCommand[1]]
+	end
 end
 
 main

@@ -65,10 +65,7 @@ class Crawler
 	include ResultsOutput
 	include CustomAuthentication
 
-	attribute_accessor :customAuth,
-	attribute_reader :link,
-
-	def initialize link
+	def initialize options, link
 		@agent = Mechanize.new{|a| a.ssl_version, 
 			a.verify_mode = 'SSLv3', OpenSSL::SSL::VERIFY_NONE}
 		@curPage = @agent.get(link)
@@ -79,13 +76,7 @@ class Crawler
 		@formInputs = Hash.new		
 		@cookies = Array.new	
 
-
-		@options: {
-			vectorsFile: "vectors-small.txt"
-			sensitiveFile: "sensitive-data.txt"
-			speed: 500
-			random: 0
-		}
+		@options = options
 	end
 
 	#
@@ -105,7 +96,7 @@ class Crawler
 	end
 
 	#
-	def crawl opts = {}	# take in input
+	def crawl test?
 		puts "\n\tCrawling <#{opts[:link]}>\n"
 		
 		if(opts[:customAuth])
@@ -129,9 +120,13 @@ class Crawler
 		
 		cookies = InputDiscovery.discoverCookies
 		
-		ResultsOutput.printQueries(linkQueries)
-		ResultsOutput.printForms(formInputs)
-		ResultsOutput.printCookies(cookies)
+		if(test?)
+			fuzzer = Fuzzer.new()
+			fuzzer.fuzz
+		else
+			ResultsOutput.printQueries(linkQueries)
+			ResultsOutput.printForms(formInputs)
+			ResultsOutput.printCookies(cookies)
+		end
 	end
 end
-
