@@ -2,7 +2,7 @@
 module DisplayResults
 
 	# Creates the arrays that are needed to hold the links
-	def displayInputs
+	def displayQueries
 		puts "\n##############################################"
 		puts "\t\tQueries"
 		puts "\n##############################################"
@@ -43,7 +43,7 @@ module DisplayResults
 				prevDom = cookie.domain
 			end
 			puts "\tName: %s \n\t   Value: %s" 
-				%[@cookie.name, @cookie.value]
+				%[cookie.name, cookie.value]
 		end
 	end
 
@@ -51,5 +51,3 @@ module DisplayResults
 		
 	end
 end 
-
-#/~bx5647/courses/plc/06-js
