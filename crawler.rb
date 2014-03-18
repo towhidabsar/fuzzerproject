@@ -121,7 +121,7 @@ class Crawler
 		cookies = InputDiscovery.discoverCookies
 		
 		if(test?)
-			fuzzer = Fuzzer.new()
+			fuzzer = Fuzzer.new(@agent, @options, @cookies)
 			fuzzer.fuzz
 		else
 			ResultsOutput.printQueries(linkQueries)

@@ -4,23 +4,29 @@ class Fuzzer
 	include ResultsOutput
 
 	# 
-	def initialize agent, vectorFile, sensitiveFile, customAuth, cookies
-		@vectors = Vectors.new(vectorFile)
-		@sensitiveData = File.readlines(sensitiveFile).map{|line| line.strip} 
+	def initialize agent, linkQueries, formInputs, cookies, options
+		@agent = agent
+		@slow = options[:slow]
+		@customAuth = options[:customAuth]
+		@sensitiveFile = options[:sensitiveFile]
+		@vectorFile = options[:vectorFile]
+
+		@vectors = Vectors.new(@vectorFile)
+		@sensitiveData = File.readlines(@sensitiveFile).map{|line| line.strip} 
 		
 		@sensitiveReport = Hash.new
 		@sensitiveData.each do |data|
 			@sensitiveReport[data] = 0
 		end
 
+		@linkQueries = linkQueries
+		@formInputs = formInputs
+		@cookies = cookies
+
 		@possibleDOS = ["########\nPossible DOS in:\n##########\n"]
 		@finalResultSanitization = ["Lack of Sanitization in:\n"]
 		@finalResultSensitive = ["Sensitive Data in:\n"]
 		@HTTPErrorCodes = ["#########\nHTTP ERROR CODES:\n############\n"]
-		@agent = agent
-		@slow = 
-		@cookies = cookies
-		@customAuth = customAuth
 	end
 
 	# 
