@@ -63,44 +63,35 @@ class Crawler
 	include DiscoverPages
 	include DiscoverInputs
 	include Test
-	include DiplayResults	
+	include DiplayResults
+	include CustomAuthentication
 
-	def initialize
+	def initialize link
 		@agent = Mechanize.new{|a| a.ssl_version, 
 			a.verify_mode = 'SSLv3', OpenSSL::SSL::VERIFY_NONE}
-		@curPage = nil 
-		@host = nil
+		@curPage = @agent.get(link)
+		@host = @curPage.uri.host
 		# List of links found that will be traversed 
 		@foundLinks = Array.new
-		@visitedLists = Array.new
 		@linkQueries = Hash.new		# Not sure to rename
 		@formInputs = Hash.new		# Rename to foundInputs
 		@cookies = Array.new		# Rename to cookies
 		@speed
-
-
+		@finalResultSanitization = Array.new
+		@finalResultSensitive = Array.new
+		@finalResultSanitization[0] = "Lack of Sanitization In:"
+		@finalResultSensitive[0] = "Sensitive Data Found In:"
 	end
 
-	def authenticate url
-		@agent.add_auth(http://127.0.0.1/dvwa, , )
-	end..
+	#def authenticate url
+	#	@agent.add_auth(http://127.0.0.1/dvwa, , )
+	#end
 
-	def crawl(link, opts = {})	# take in input
-		@curPage = @agent.get(link)
-		@host = curPage.uri.host
-		
+	def crawl opts = {}	# take in input
 		puts "\n\tCrawling <#{link}>\n"
-
-		discoverPages(link)
-
-		
-		@@finalResultSanitization = Array.new
-		@@finalResultSensitive = Array.new
-		@@finalResultSanitization[0] = "Lack of Sanitization In:"
-		@@finalResultSensitive[0] = "Sensitive Data Found In:"
 		
 		# Get all the pages in the website.
-		discoverPages(mainURL)
+		PageDiscovery.discoverPages(mainURL)
 		
 		# Traverse each of the pages and find all the possible inputs.
 		foundLinks.each do |link|
@@ -108,19 +99,20 @@ class Crawler
 			@curPage = agent.get(link)
 			
 			# Get all the queries in the link
-			discoverQueries(curPage)
+			InputDiscovery.discoverQueries
 			
 			# Get all the input forms in the page
-			discoverForms(curPage)
+			InputDiscovery.discoverForms
 		end
 		
-		cookies = discoverCookies(agent)
+		cookies = InputDiscovery.discoverCookies
 		
-		return [foundLinks, linkQueries, formInputs, cookies] 
-
+		DisplayResults.displayQueries(linkQueries)
+		DisplayResults.displayForms(formInputs)
+		DisplayResults.displayCookies(cookies)
 	end
 
-	def test
+	def fuzz
 
 	end
 end

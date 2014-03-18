@@ -1,41 +1,24 @@
-require 'mechanize'
-require 'rubygems'
-require 'uri'
-require_relative 'inputValidation'
-require_relative 'inputDiscovery'
-require_relative 'customAuthentication'
-
 module PageDiscovery
 
-	def discoverPages		
-		# Add the given page to the foundLinks
-		@foundLinks << curPage.uri 
-		
-		# Find all the links in the given page
-		@curPage.links.each do |link|
-			@foundLinks << @curPage.uri.merge(link.uri)
-		end
-		
+	def discoverPages	
+		@foundLinks << curPage.uri	
 		begin
 			@foundLinks.each do |link|
-				@visitedLinks << link
-				@foundLinks.delete(link)
-				
 				@curPage = @agent.get(link)
-				
-				# Find all the links in the website
-				curPage.links.each do |subLink|
-					@foundLinks << curPage.uri.merge(subLink.uri)
-				end
 
-				guessPages
+				@curPage.links.each do |subLink|
+					# Merge in-case relative relative
+					@foundLinks << @curPage.uri.merge(subLink.uri)
+				end
+				
+				guessPages(link)
 
 				# Ensure no duplicates are in the list
 				@foundLinks = @foundLinks.uniq
 
 				# Ensure there are no 
 				filterOffSiteLinks
-			end
+		end
 		rescue => e
 			puts e.message
 		end
@@ -53,7 +36,7 @@ module PageDiscovery
 	# Should this just add in all the guessed pages into 
 	# or also validate those pages?
 	# or ??? (insert suggestions)
-	def guessPages(url)
+	def guessPages uri
 		extensions = ['.php', '.jsp', '.txt', '.html', '.htm']
 		words = Array.new
 		testURLs = Array.new
@@ -62,9 +45,6 @@ module PageDiscovery
 		#url = 'http://127.0.0.1'
 		#url = InputValidation.validateURL(url)	
 
-		agent = Mechanize.new{|a| a.ssl_version, a.verify_mode = 'SSLv3', 
-			OpenSSL::SSL::VERIFY_NONE}
-		
 		file = File.new("words.txt")
 		file.each do |word|
 			words << word.strip
