@@ -61,7 +61,9 @@ class Options
 		puts sensitiveFile
 		random = cmdLineOptions[3]
 		@@slow = cmdLineOptions[4]
-		
+		if vectorFile == 0
+			vectorFile = "vectors-small.txt"
+		end
 		#The default slow time is 500
 		if @@slow == 0
 			@@slow = 500
