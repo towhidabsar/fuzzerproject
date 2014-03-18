@@ -60,7 +60,7 @@ class Options
 		sensitiveFile = cmdLineOptions[2]
 		puts sensitiveFile
 		random = cmdLineOptions[3]
-		@@slow = cmdLineOptions[4]
+		@@slow = cmdLineOptions[4].to_i
 		if vectorFile == 0
 			vectorFile = "vectors-small.txt"
 		end

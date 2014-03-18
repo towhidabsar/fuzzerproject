@@ -4,11 +4,12 @@ fuzzerproject
 The fuzzer web application testing project.
 
 
-To run for dvwa type in https://127.0.0.1/dvwa
-To run for bodgeit type in https://127.0.0.1/bodgeit
+To run for dvwa type in http://127.0.0.1/dvwa
+To run for bodgeit type in http://127.0.0.1/bodgeit
 
-Currently the --customauthen= does not function but it will run the custom authentication with these two inputs.
+Typical command:
 
-To run for dvwa input:
+fuzz test http://127.0.0.1/dvwa --custom-auth=dvwa --vectors=vectors-small.txt --sensitive=sensitive-data.txt --slow=1000
 
-fuzz test http://127.0.0.1/dvwa --custom-auth=dvwa --vectors=vectors-small.txt --sensitive=sensitive-data.txt
+The log of all the detailed vulnerabilities are found in output.txt.
+The report outlining basic metrics of the problems found in the web application is report.txt.
