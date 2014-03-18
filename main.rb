@@ -52,7 +52,6 @@ def optionsParsing(rawOptions)
 				notEmptyAdd(:slow, command)
 		end
 	end
-	return options
 end
 
 # 
