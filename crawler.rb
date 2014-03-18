@@ -56,15 +56,17 @@
 			(f) displayCookies
 =end
 
-require 'rubygems'
 require 'mechanize'
 
 class Crawler
 	include DiscoverPages
 	include DiscoverInputs
 	include Test
-	include DiplayResults
+	include ResultsOutput
 	include CustomAuthentication
+
+	attribute_accessor :customAuth,
+	attribute_reader :link,
 
 	def initialize link
 		@agent = Mechanize.new{|a| a.ssl_version, 
@@ -73,23 +75,46 @@ class Crawler
 		@host = @curPage.uri.host
 		# List of links found that will be traversed 
 		@foundLinks = Array.new
-		@linkQueries = Hash.new		# Not sure to rename
-		@formInputs = Hash.new		# Rename to foundInputs
-		@cookies = Array.new		# Rename to cookies
-		@speed
-		@finalResultSanitization = Array.new
-		@finalResultSensitive = Array.new
-		@finalResultSanitization[0] = "Lack of Sanitization In:"
-		@finalResultSensitive[0] = "Sensitive Data Found In:"
+		@linkQueries = Hash.new
+		@formInputs = Hash.new		
+		@cookies = Array.new	
+		@possibleDOS = ["########\nPossible DOS in:\n##########\n"]
+		@finalResultSanitization = ["Lack of Sanitization in:\n"]
+		@finalResultSensitive = ["Sensitive Data in:\n"]
+		@HTTPErrorCodes  ["#########\nHTTP ERROR CODES:\n############\n"]
+
+		@opts: {
+			vectorsFile: "vectors-small.txt"
+			sensitiveFile: "sensitive-data.txt"
+
+
+		}
 	end
 
-	#def authenticate url
-	#	@agent.add_auth(http://127.0.0.1/dvwa, , )
-	#end
+	#
+	def authenticate link, customAuth
+		case customAuth
+			when "dvwa"
+				page = agent.get(link)
+				username = "admin"
+			when "bodgeit"
+				page = agent.click(agent.get(link).link_with(:text => /Login/))	
+				username = "test@thebodgeitstore.com"
+		end
+		login_form = page.forms.first
+		login_form.username = username
+		login_form.password = "password"
+		agent.submit(login_form, login_form.buttons.first)
+	end
 
+	#
 	def crawl opts = {}	# take in input
-		puts "\n\tCrawling <#{link}>\n"
+		puts "\n\tCrawling <#{opts[:link]}>\n"
 		
+		if(opts[:customAuth])
+			authenticate(opts[:customAuth])
+		end
+
 		# Get all the pages in the website.
 		PageDiscovery.discoverPages(mainURL)
 		
@@ -107,9 +132,9 @@ class Crawler
 		
 		cookies = InputDiscovery.discoverCookies
 		
-		DisplayResults.displayQueries(linkQueries)
-		DisplayResults.displayForms(formInputs)
-		DisplayResults.displayCookies(cookies)
+		ResultsOutput.printQueries(linkQueries)
+		ResultsOutput.printForms(formInputs)
+		ResultsOutput.printCookies(cookies)
 	end
 
 	def fuzz

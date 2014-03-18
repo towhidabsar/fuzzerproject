@@ -1,8 +1,8 @@
 # 
-module DisplayResults
+module ResultsOutput
 
 	# Creates the arrays that are needed to hold the links
-	def displayQueries
+	def printQueries
 		puts "\n##############################################"
 		puts "\t\tQueries"
 		puts "\n##############################################"
@@ -15,8 +15,8 @@ module DisplayResults
 		end
 	end
 
-  # 
-	def displayForms
+  	# 
+	def printForms
 		puts "\n##############################################"
 		puts "\t\tForms"
 		puts "\n##############################################"
@@ -29,8 +29,8 @@ module DisplayResults
 		end
 	end
 
-  # 
-	def displayCookies
+ 	# 
+	def printCookies
 		puts "\n##############################################"
 		puts "\t\tCookies"
 		puts "\n##############################################"
@@ -47,7 +47,45 @@ module DisplayResults
 		end
 	end
 
-	def displayTestResults
-		
+	#
+	def writeLog
+		File.open("output.txt", 'w') { |file| 
+			@finalResultSanitization.each  do |line|
+				file.write(line)
+			end
+			@finalResultSensitive.each do |line| 
+				file.write(line)
+				@sensitiveData.each do |data|
+					if line.include? data
+						@sensitiveReport[data] += 1 
+					end
+				end
+			end
+			@possibleDOS.each do|line| 
+				file.write(line)
+			end
+
+	end
+
+	#
+	def writeReport 
+		File.open("report.txt", 'w') do |file|
+			file.write("Lack of Sanitization count: 
+				#{(@finalResultSanitization.length - 1)}")
+
+			file.write("\nSensitive Data Report:\n"
+			@sensitiveReport.each_key do |data|
+				file.write("\n %s found in %s instances")
+				%[data, sensitiveReport[data]]
+			end
+
+			file.write("\nNumber of DOS Possibilities: 
+				#{(@possibleDOS.length - 1)}\n")
+
+			file.write("HTTP Error Codes:\n")
+			file.write("\t%s found in %s instances\n")
+				%[@HTTPErrorCodes.uniq, (@HTTPErrorCodes.length - 1)]
+			puts "THE END"
+		end
 	end
 end 

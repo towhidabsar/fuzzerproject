@@ -7,10 +7,6 @@ class Vector
     @count = 0
   end
 
-  #def resource_path file
-  #  "resources/vectors/" + file
-  #end
-
   # Give the current fuzzVector and rotate to the next one.
   def next_fuzzVector
     attack = @fuzzVector
