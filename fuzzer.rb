@@ -51,9 +51,9 @@ class Fuzzer
 			end
 		else
 			puts "############# LINK QUERIES bodgeit ######################"
-			fuzzQueries
+			fuzzQueries(@vectors, @linkQueries)
 			puts "############# FORM INPUTS bodgeit ######################"
-			fuzzInputs
+			fuzzInputs(@vectors, @formInputs)
 		end
 
 		ResultsOutput.writeLog(@finalResultSanitization, 
@@ -65,51 +65,53 @@ class Fuzzer
 	end
 
 	# 
-	def fuzzLinkQueries
+	def fuzzLinkQueries vectors, linkQueries
 		# Check if there is a vector next in the vectorList
-		while @vectors.has_next?
+		while vectors.has_next?
 			# Get the next vector
-			vector = @vectors.next_fuzzVector
+			vector = vectors.next_fuzzVector
 			# Go through the list of queries with one specific vector
-			@linkQueries.each_key do |link|
+			linkQueries.each_key do |link|
 				testInput(true, link, vector)
 			end
 		end
 		# After parsing reset the vector count.
-		@vectors.reset_count!
+		vectors.reset_count!
 	end
 
 	# Check all the form inputs with fuzz vectors.
-	def fuzzFormInputs
+	def fuzzFormInputs vectors, formInputs
 		# Check if there is a vector next in the vectorList
-		while @vectors.has_next?
+		while vectors.has_next?
 			# Get the next vector
-			vector = @vectors.next_fuzzVector
+			vector = vectors.next_fuzzVector
 			# Go through the list of inputs with one specific vector
-			@formInputs.each_key do |link|
+			formInputs.each_key do |link|
 				testInput(false, link, vector)
 			end
 		end
 		# After parsing reset the vector count.
-		@vectors.reset_count!
+		vectors.reset_count!
 	end
 
 	#
-	def checkSanitization(vector)
-		if @agent.page.body.include?(vector.chomp)
-			@finalResultSanitization << "Link: %s %s\n"
-			%[@agent.page.uri.host, @agent.page.uri.path]
+	def checkSanitization page, vector, sanitize
+		if page.body.include?(vector.chomp)
+			sanitize << "Link: %s %s\n
+			"%[page.uri.host, page.uri.path]
 		end
+		return sanitize
 	end
 
 	#
-	def checkSensitiveData
-		@sensitiveData.each do |data|
-			if @agent.page.content.include?(data)
-				@finalResultSensitive << "Link: %s %s contains %s\n"
-				%[@agent.page.uri.host, @agent.page.uri.path, data]
+	def checkSensitiveData page, sensitive, sensitiveData
+		sensitiveData.each do |data|
+			if page.content.include?(data)
+				sensitive << "Link: %s %s contains %s\n
+				"%[page.uri.host, page.uri.path, data]
 			end
 		end
+		return sensitive
 	end
 
 	# This method is responsible for performing the actual tests
@@ -150,10 +152,10 @@ class Fuzzer
 			wait_time = Time.now - start_time
 
 			# Check the sanitization of input.
-			checkSanitization(vector)
+			checkSanitization(@agent.page, vector, @finalResultSanitization)
 
 			# Check whether any sensitive data is leaked.
-			checkSensitiveData
+			checkSensitiveData(@agent.page, @finalResultSensitive, @sensitiveData)
 
 			if wait_time * 1000 > @slow
 				@possibleDOS << "Link: %s %s\n"
