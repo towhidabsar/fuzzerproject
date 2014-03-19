@@ -48,7 +48,7 @@ class Crawler
 		puts "\tCrawling <#{@link}>\n"
 
 		if(@options[:customAuth] != nil || @options[:customAuth] != '')
-			authenticate(@curPage.uri.to_s, @options[:customAuth])
+			authenticate(@curPage.uri, @options[:customAuth])
 		end
 
 		# Get all the pages in the website.

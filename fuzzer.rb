@@ -43,16 +43,16 @@ class Fuzzer
 					end
 				end
 				puts "############# LINK QUERIES dvwa ######################"
-				fuzzLinkQueries
+				fuzzQueries(@vectors, @linkQueries)
 				puts "############# FORM INPUTS dvwa ######################"
-				fuzzFormInputs
+				fuzzInputs(@vectors, @formInputs)
 				i += 1
 			end
 		else
 			puts "############# LINK QUERIES bodgeit ######################"
-			fuzzLinkQueries(@vectors, @linkQueries)
+			fuzzQueries(@vectors, @linkQueries)
 			puts "############# FORM INPUTS bodgeit ######################"
-			fuzzFormInputs(@vectors, @formInputs)
+			fuzzInputs(@vectors, @formInputs)
 		end
 
 		ResultsOutput.writeLog(@finalResultSanitization, 

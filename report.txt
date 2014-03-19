@@ -1,0 +1,26 @@
+Lack of Sanitization count: 
+				0
+Sensitive Data Report:
+
+ %s found in %s instances
+ %s found in %s instances
+ %s found in %s instances
+ %s found in %s instances
+ %s found in %s instances
+ %s found in %s instances
+ %s found in %s instances
+ %s found in %s instances
+ %s found in %s instances
+ %s found in %s instances
+ %s found in %s instances
+ %s found in %s instances
+ %s found in %s instances
+ %s found in %s instances
+ %s found in %s instances
+ %s found in %s instances
+ %s found in %s instances
+ %s found in %s instances
+Number of DOS Possibilities: 
+				36
+HTTP Error Codes:
+	%s found in %s instances

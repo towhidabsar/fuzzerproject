@@ -7,7 +7,7 @@ module PageDiscovery extend self
 		begin
 			foundLinks.each do |link|
 				curPage = agent.get(link)
-
+				puts link
 				curPage.links.each do |subLink|
 					# Merge in-case relative relative
 					foundLinks << curPage.uri.merge(subLink.uri)

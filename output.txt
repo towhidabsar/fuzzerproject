@@ -1,0 +1,329 @@
+Lack of Sanitization in:
+Sensitive Data in:
+Link: 127.0.0.1 /dvwa/login.php contains password
+
+				Link: 127.0.0.1 /dvwa/login.php contains pass
+
+				Link: 127.0.0.1 /dvwa/login.php contains word
+
+				Link: 127.0.0.1 /dvwa/login.php contains php
+
+				Link: 127.0.0.1 /dvwa/login.php contains password
+
+				Link: 127.0.0.1 /dvwa/login.php contains pass
+
+				Link: 127.0.0.1 /dvwa/login.php contains word
+
+				Link: 127.0.0.1 /dvwa/login.php contains php
+
+				Link: 127.0.0.1 /dvwa/login.php contains password
+
+				Link: 127.0.0.1 /dvwa/login.php contains pass
+
+				Link: 127.0.0.1 /dvwa/login.php contains word
+
+				Link: 127.0.0.1 /dvwa/login.php contains php
+
+				Link: 127.0.0.1 /dvwa/login.php contains password
+
+				Link: 127.0.0.1 /dvwa/login.php contains pass
+
+				Link: 127.0.0.1 /dvwa/login.php contains word
+
+				Link: 127.0.0.1 /dvwa/login.php contains php
+
+				Link: 127.0.0.1 /dvwa/login.php contains password
+
+				Link: 127.0.0.1 /dvwa/login.php contains pass
+
+				Link: 127.0.0.1 /dvwa/login.php contains word
+
+				Link: 127.0.0.1 /dvwa/login.php contains php
+
+				Link: 127.0.0.1 /dvwa/login.php contains password
+
+				Link: 127.0.0.1 /dvwa/login.php contains pass
+
+				Link: 127.0.0.1 /dvwa/login.php contains word
+
+				Link: 127.0.0.1 /dvwa/login.php contains php
+
+				Link: 127.0.0.1 /dvwa/login.php contains password
+
+				Link: 127.0.0.1 /dvwa/login.php contains pass
+
+				Link: 127.0.0.1 /dvwa/login.php contains word
+
+				Link: 127.0.0.1 /dvwa/login.php contains php
+
+				Link: 127.0.0.1 /dvwa/login.php contains password
+
+				Link: 127.0.0.1 /dvwa/login.php contains pass
+
+				Link: 127.0.0.1 /dvwa/login.php contains word
+
+				Link: 127.0.0.1 /dvwa/login.php contains php
+
+				Link: 127.0.0.1 /dvwa/login.php contains password
+
+				Link: 127.0.0.1 /dvwa/login.php contains pass
+
+				Link: 127.0.0.1 /dvwa/login.php contains word
+
+				Link: 127.0.0.1 /dvwa/login.php contains php
+
+				Link: 127.0.0.1 /dvwa/login.php contains password
+
+				Link: 127.0.0.1 /dvwa/login.php contains pass
+
+				Link: 127.0.0.1 /dvwa/login.php contains word
+
+				Link: 127.0.0.1 /dvwa/login.php contains php
+
+				Link: 127.0.0.1 /dvwa/login.php contains password
+
+				Link: 127.0.0.1 /dvwa/login.php contains pass
+
+				Link: 127.0.0.1 /dvwa/login.php contains word
+
+				Link: 127.0.0.1 /dvwa/login.php contains php
+
+				Link: 127.0.0.1 /dvwa/login.php contains password
+
+				Link: 127.0.0.1 /dvwa/login.php contains pass
+
+				Link: 127.0.0.1 /dvwa/login.php contains word
+
+				Link: 127.0.0.1 /dvwa/login.php contains php
+
+				Link: 127.0.0.1 /dvwa/login.php contains password
+
+				Link: 127.0.0.1 /dvwa/login.php contains pass
+
+				Link: 127.0.0.1 /dvwa/login.php contains word
+
+				Link: 127.0.0.1 /dvwa/login.php contains php
+
+				Link: 127.0.0.1 /dvwa/login.php contains password
+
+				Link: 127.0.0.1 /dvwa/login.php contains pass
+
+				Link: 127.0.0.1 /dvwa/login.php contains word
+
+				Link: 127.0.0.1 /dvwa/login.php contains php
+
+				Link: 127.0.0.1 /dvwa/login.php contains password
+
+				Link: 127.0.0.1 /dvwa/login.php contains pass
+
+				Link: 127.0.0.1 /dvwa/login.php contains word
+
+				Link: 127.0.0.1 /dvwa/login.php contains php
+
+				Link: 127.0.0.1 /dvwa/login.php contains password
+
+				Link: 127.0.0.1 /dvwa/login.php contains pass
+
+				Link: 127.0.0.1 /dvwa/login.php contains word
+
+				Link: 127.0.0.1 /dvwa/login.php contains php
+
+				Link: 127.0.0.1 /dvwa/login.php contains password
+
+				Link: 127.0.0.1 /dvwa/login.php contains pass
+
+				Link: 127.0.0.1 /dvwa/login.php contains word
+
+				Link: 127.0.0.1 /dvwa/login.php contains php
+
+				Link: 127.0.0.1 /dvwa/login.php contains password
+
+				Link: 127.0.0.1 /dvwa/login.php contains pass
+
+				Link: 127.0.0.1 /dvwa/login.php contains word
+
+				Link: 127.0.0.1 /dvwa/login.php contains php
+
+				Link: 127.0.0.1 /dvwa/login.php contains password
+
+				Link: 127.0.0.1 /dvwa/login.php contains pass
+
+				Link: 127.0.0.1 /dvwa/login.php contains word
+
+				Link: 127.0.0.1 /dvwa/login.php contains php
+
+				Link: 127.0.0.1 /dvwa/login.php contains password
+
+				Link: 127.0.0.1 /dvwa/login.php contains pass
+
+				Link: 127.0.0.1 /dvwa/login.php contains word
+
+				Link: 127.0.0.1 /dvwa/login.php contains php
+
+				Link: 127.0.0.1 /dvwa/login.php contains password
+
+				Link: 127.0.0.1 /dvwa/login.php contains pass
+
+				Link: 127.0.0.1 /dvwa/login.php contains word
+
+				Link: 127.0.0.1 /dvwa/login.php contains php
+
+				Link: 127.0.0.1 /dvwa/login.php contains password
+
+				Link: 127.0.0.1 /dvwa/login.php contains pass
+
+				Link: 127.0.0.1 /dvwa/login.php contains word
+
+				Link: 127.0.0.1 /dvwa/login.php contains php
+
+				Link: 127.0.0.1 /dvwa/login.php contains password
+
+				Link: 127.0.0.1 /dvwa/login.php contains pass
+
+				Link: 127.0.0.1 /dvwa/login.php contains word
+
+				Link: 127.0.0.1 /dvwa/login.php contains php
+
+				Link: 127.0.0.1 /dvwa/login.php contains password
+
+				Link: 127.0.0.1 /dvwa/login.php contains pass
+
+				Link: 127.0.0.1 /dvwa/login.php contains word
+
+				Link: 127.0.0.1 /dvwa/login.php contains php
+
+				Link: 127.0.0.1 /dvwa/login.php contains password
+
+				Link: 127.0.0.1 /dvwa/login.php contains pass
+
+				Link: 127.0.0.1 /dvwa/login.php contains word
+
+				Link: 127.0.0.1 /dvwa/login.php contains php
+
+				Link: 127.0.0.1 /dvwa/login.php contains password
+
+				Link: 127.0.0.1 /dvwa/login.php contains pass
+
+				Link: 127.0.0.1 /dvwa/login.php contains word
+
+				Link: 127.0.0.1 /dvwa/login.php contains php
+
+				Link: 127.0.0.1 /dvwa/login.php contains password
+
+				Link: 127.0.0.1 /dvwa/login.php contains pass
+
+				Link: 127.0.0.1 /dvwa/login.php contains word
+
+				Link: 127.0.0.1 /dvwa/login.php contains php
+
+				Link: 127.0.0.1 /dvwa/login.php contains password
+
+				Link: 127.0.0.1 /dvwa/login.php contains pass
+
+				Link: 127.0.0.1 /dvwa/login.php contains word
+
+				Link: 127.0.0.1 /dvwa/login.php contains php
+
+				Link: 127.0.0.1 /dvwa/login.php contains password
+
+				Link: 127.0.0.1 /dvwa/login.php contains pass
+
+				Link: 127.0.0.1 /dvwa/login.php contains word
+
+				Link: 127.0.0.1 /dvwa/login.php contains php
+
+				Link: 127.0.0.1 /dvwa/login.php contains password
+
+				Link: 127.0.0.1 /dvwa/login.php contains pass
+
+				Link: 127.0.0.1 /dvwa/login.php contains word
+
+				Link: 127.0.0.1 /dvwa/login.php contains php
+
+				Link: 127.0.0.1 /dvwa/login.php contains password
+
+				Link: 127.0.0.1 /dvwa/login.php contains pass
+
+				Link: 127.0.0.1 /dvwa/login.php contains word
+
+				Link: 127.0.0.1 /dvwa/login.php contains php
+
+				Link: 127.0.0.1 /dvwa/login.php contains password
+
+				Link: 127.0.0.1 /dvwa/login.php contains pass
+
+				Link: 127.0.0.1 /dvwa/login.php contains word
+
+				Link: 127.0.0.1 /dvwa/login.php contains php
+
+				Link: 127.0.0.1 /dvwa/login.php contains password
+
+				Link: 127.0.0.1 /dvwa/login.php contains pass
+
+				Link: 127.0.0.1 /dvwa/login.php contains word
+
+				Link: 127.0.0.1 /dvwa/login.php contains php
+
+				Link: 127.0.0.1 /dvwa/login.php contains password
+
+				Link: 127.0.0.1 /dvwa/login.php contains pass
+
+				Link: 127.0.0.1 /dvwa/login.php contains word
+
+				Link: 127.0.0.1 /dvwa/login.php contains php
+
+				Link: 127.0.0.1 /dvwa/login.php contains password
+
+				Link: 127.0.0.1 /dvwa/login.php contains pass
+
+				Link: 127.0.0.1 /dvwa/login.php contains word
+
+				Link: 127.0.0.1 /dvwa/login.php contains php
+
+				Link: 127.0.0.1 /dvwa/login.php contains password
+
+				Link: 127.0.0.1 /dvwa/login.php contains pass
+
+				Link: 127.0.0.1 /dvwa/login.php contains word
+
+				Link: 127.0.0.1 /dvwa/login.php contains php
+
+				########
+Possible DOS in:
+##########
+Link: %s %s
+Link: %s %s
+Link: %s %s
+Link: %s %s
+Link: %s %s
+Link: %s %s
+Link: %s %s
+Link: %s %s
+Link: %s %s
+Link: %s %s
+Link: %s %s
+Link: %s %s
+Link: %s %s
+Link: %s %s
+Link: %s %s
+Link: %s %s
+Link: %s %s
+Link: %s %s
+Link: %s %s
+Link: %s %s
+Link: %s %s
+Link: %s %s
+Link: %s %s
+Link: %s %s
+Link: %s %s
+Link: %s %s
+Link: %s %s
+Link: %s %s
+Link: %s %s
+Link: %s %s
+Link: %s %s
+Link: %s %s
+Link: %s %s
+Link: %s %s
+Link: %s %s
+Link: %s %s

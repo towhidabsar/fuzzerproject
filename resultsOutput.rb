@@ -56,7 +56,7 @@ module ResultsOutput extend self
 			end
 			sensitive.each do |line| 
 				file.write(line)
-				sensData.each do |data|
+				senseData.each do |data|
 					if line.include? data
 						report[data] += 1 
 					end
@@ -81,7 +81,7 @@ module ResultsOutput extend self
 			end
 
 			file.write("\nNumber of DOS Possibilities: 
-				#{(@posDOS.length - 1)}\n")
+				#{(posDOS.length - 1)}\n")
 
 			file.write("HTTP Error Codes:\n")
 			file.write("\t%s found in %s instances\n")
