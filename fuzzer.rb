@@ -1,3 +1,4 @@
+require 'mechanize'
 require './vectors'
 require './resultsOutput'
 
@@ -9,10 +10,8 @@ class Fuzzer
 		@agent = agent
 		@slow = options[:slow]
 		@customAuth = options[:customAuth]
-		@sensitiveFile = options[:sensitiveFile]
-
 		@vectors = Vectors.new(options[:vectorsFile])
-		@sensitiveData = File.readlines(@sensitiveFile).map{|line| line.strip} 
+		@sensitiveData = File.readlines(options[:sensitiveFile]).map{|line| line.strip} 
 		
 		@sensitiveReport = Hash.new
 		@sensitiveData.each do |data|
