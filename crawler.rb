@@ -69,8 +69,8 @@ class Crawler
 		@cookies = InputDiscovery.discoverCookies(@agent)
 		
 		if(test)
-			fuzzer = Fuzzer.new(@agent, @options, @cookies)
-			fuzzer.fuzz
+			fuzzer = Fuzzer.new(@agent, @linkQueries, @formInputs, @cookies, @options)
+			fuzzer.fuzz(@link)
 		else
 			ResultsOutput.printQueries(@linkQueries)
 			ResultsOutput.printForms(@formInputs)

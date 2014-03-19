@@ -5,8 +5,7 @@ class Fuzzer
 	include ResultsOutput
 
 	# 
-	def initialize (agent, linkQueries = [], formInputs = [], 
-		cookies = [], options = {})
+	def initialize (agent, linkQueries, formInputs, cookies, options)
 		@agent = agent
 		@slow = options[:slow]
 		@customAuth = options[:customAuth]
@@ -31,7 +30,8 @@ class Fuzzer
 	end
 
 	# 
-	def fuzz
+	def fuzz link
+		puts "\tTesting #{link}>\n"
 		curSecurity = ["low", "medium", "high"]
 		i = 0
 		# For dvwa change cookie value, start with low, medium and then high.
