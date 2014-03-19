@@ -6,7 +6,7 @@ class Fuzzer
 	include ResultsOutput
 
 	# 
-	def initialize (agent, linkQueries, formInputs, cookies, options)
+	def initialize agent, linkQueries, formInputs, cookies, options
 		@agent = agent
 		@slow = options[:slow]
 		@customAuth = options[:customAuth]
@@ -64,7 +64,7 @@ class Fuzzer
 	end
 
 	# 
-	def fuzzLinkQueries vectors, linkQueries
+	def fuzzQueries vectors, linkQueries
 		# Check if there is a vector next in the vectorList
 		while vectors.has_next?
 			# Get the next vector
@@ -79,7 +79,7 @@ class Fuzzer
 	end
 
 	# Check all the form inputs with fuzz vectors.
-	def fuzzFormInputs vectors, formInputs
+	def fuzzInputs vectors, formInputs
 		# Check if there is a vector next in the vectorList
 		while vectors.has_next?
 			# Get the next vector

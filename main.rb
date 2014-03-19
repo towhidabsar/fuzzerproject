@@ -31,7 +31,7 @@ def main
 end
 
 #
-def optionsParsing(rawOptions = [])
+def optionsParsing(rawOptions)
 	@options = {
 		:customAuth => "",
 		:vectorsFile => "vectors-small.txt",
