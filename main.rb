@@ -1,6 +1,4 @@
-commands = Hash.new { |hash, key| hash[key] = 
-	"#{key} is not currently support." }
-	
+require './crawler'
 
 def main
 	puts "Please enter: fuzz [discover | test] <url> OPTIONS"
@@ -62,5 +60,5 @@ def notEmptyAdd sym, command
 	end
 end
 
-main
+main 
 puts "THE END"

@@ -1,5 +1,5 @@
 # 
-module PageDiscovery
+module PageDiscovery extend self
 
 	#
 	def discoverPages	

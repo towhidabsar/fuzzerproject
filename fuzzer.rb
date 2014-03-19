@@ -1,4 +1,5 @@
-require_relative 'vectors'
+require './vectors'
+require './resultsOutput'
 
 class Fuzzer
 	include ResultsOutput

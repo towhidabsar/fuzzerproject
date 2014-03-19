@@ -1,5 +1,5 @@
 # Discovers all the inputs in the page
-module InputDiscovery
+module InputDiscovery extend self
 
 	# Parses the given url to find possible input queries
 	def discoverQueries

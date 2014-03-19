@@ -1,69 +1,12 @@
-=begin
-	CustomAuthentication
-	PageDiscovery
-		LinkDiscovery
-		PageGuessing
-	InputDiscovery
-		ParseURLS
-		FormParameters
-		Cookies
-	LackOfSanization
-	SensitiveDataLeaked
-	DelayedResponse
-
-
-	Options
-		--custom-auth=string
-
-		Discover options:
-			--common-words=file
-
-		Test options:
-			--vectors=file
-			--sensitive=file
-			--random=[true|false]
-			--slow=500
-
-	####################################
-
-	(c) Crawler
-		(v) agent
-		(v) foundLinks
-		(v) foundQueries
-		(v) foundForms
-		(v) foundCookies
-
-		(f) Custom Authenticate
-
-		(m) DiscoverPages
-			(f) discoverPages
-			(f) guessPages
-			(f) filterOffSiteLinks
-
-		(m) DiscoverInputs
-			(f) discoverQueries
-			(f) discoverForms
-			(f) discoverCookies
-			(f) filterRedundantInput
-
-		(m) Test
-
-
-		(m) DisplayResults
-			(f) displayPages
-			(f) displayQueries
-			(f) displayForms
-			(f) displayCookies
-=end
-
 require 'mechanize'
+require './pageDiscovery'
+require './inputDiscovery'
+require './resultsOutput'
 
 class Crawler
-	include DiscoverPages
-	include DiscoverInputs
-	include Test
+	include PageDiscovery
+	include InputDiscovery
 	include ResultsOutput
-	include CustomAuthentication
 
 	def initialize options, link
 		@agent = Mechanize.new{|a| a.ssl_version, 
@@ -96,7 +39,7 @@ class Crawler
 	end
 
 	#
-	def crawl test?
+	def crawl test
 		puts "\n\tCrawling <#{opts[:link]}>\n"
 		
 		if(opts[:customAuth])
@@ -120,7 +63,7 @@ class Crawler
 		
 		cookies = InputDiscovery.discoverCookies
 		
-		if(test?)
+		if(test)
 			fuzzer = Fuzzer.new(@agent, @options, @cookies)
 			fuzzer.fuzz
 		else
