@@ -24,14 +24,14 @@ class Crawler
 	end
 
 	#
-	def authenticate link, customAuth, agent
+	def authenticate1 link, customAuth, agent
 		page = agent.get(link)
 		case customAuth
 			when "dvwa"
 				authHelper("admin", "password", @agent, page)
 			when "bodgeit"
 				newPage = agent.click(page.link_with(:text => /Login/))	
-				authHelper("test@thebodgeitstore.com", "password", @agent, newPage)
+				authHelper("test@thebodgeitstore.com", "password", agent, newPage)
 		end
 	end
 
@@ -42,12 +42,26 @@ class Crawler
 		agent.submit(login_form, login_form.buttons.first)
 	end
 
+	def authenticate link, customAuth, agent
+		case customAuth
+			when "dvwa"
+				page = agent.get(link)
+				username = "admin"
+			when "bodgeit"
+				page = agent.click(agent.get(link).link_with(:text => /Login/))	
+				username = "test@thebodgeitstore.com"
+		end
+		login_form = page.forms.first
+		login_form.username = username
+		login_form.password = "password"
+		agent.submit(login_form, login_form.buttons.first)
+	end
 	#
 	def crawl test
 		puts "\tCrawling <#{@link}>\n"
 
 		if(@options[:customAuth] != nil || @options[:customAuth] != '')
-			authenticate(@curPage.uri, @options[:customAuth])
+			authenticate(@curPage.uri, @options[:customAuth], agent)
 		end
 
 		# Get all the pages in the website.
