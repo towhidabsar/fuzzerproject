@@ -24,23 +24,24 @@ class Crawler
 	end
 
 	#
-	def authenticate link, customAuth
+	def authenticate link, customAuth, agent
+		page = agent.get(link)
 		case customAuth
 			when "dvwa"
-				page = @agent.get(link)
 				username = "admin"
-				login_form = page.forms.first
-				login_form.username = username
-				login_form.password = "password"
-				@agent.submit(login_form, login_form.buttons.first)
+				authHelper(username, "password", @agent, page)
 			when "bodgeit"
-				page = @agent.click(@agent.get(link).link_with(:text => /Login/))	
+				newPage = agent.click(page.link_with(:text => /Login/))	
 				username = "test@thebodgeitstore.com"
-				login_form = page.forms.first
-				login_form.username = username
-				login_form.password = "password"
-				@agent.submit(login_form, login_form.buttons.first)
+				authHelper(username, "password", @agent, newPage)
 		end
+	end
+
+	def authHelper usr, pw, agent, page
+		login_form = page.forms.first
+		login_form.username = username
+		login_form.password = pw
+		agent.submit(login_form, login_form.buttons.first)
 	end
 
 	#
