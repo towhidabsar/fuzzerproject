@@ -32,14 +32,14 @@ class Crawler
 				login_form = page.forms.first
 				login_form.username = username
 				login_form.password = "password"
-				agent.submit(login_form, login_form.buttons.first)
+				@agent.submit(login_form, login_form.buttons.first)
 			when "bodgeit"
 				page = @agent.click(@agent.get(link).link_with(:text => /Login/))	
 				username = "test@thebodgeitstore.com"
 				login_form = page.forms.first
 				login_form.username = username
 				login_form.password = "password"
-				agent.submit(login_form, login_form.buttons.first)
+				@agent.submit(login_form, login_form.buttons.first)
 		end
 	end
 
