@@ -28,12 +28,10 @@ class Crawler
 		page = agent.get(link)
 		case customAuth
 			when "dvwa"
-				username = "admin"
-				authHelper(username, "password", @agent, page)
+				authHelper("admin", "password", @agent, page)
 			when "bodgeit"
 				newPage = agent.click(page.link_with(:text => /Login/))	
-				username = "test@thebodgeitstore.com"
-				authHelper(username, "password", @agent, newPage)
+				authHelper("test@thebodgeitstore.com", "password", @agent, newPage)
 		end
 	end
 
