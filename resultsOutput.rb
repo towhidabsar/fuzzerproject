@@ -1,40 +1,40 @@
-
 # 
 module ResultsOutput extend self
-
+	HASHTAGS = 50
 	# Creates the arrays that are needed to hold the links
 	def printQueries links
-		puts "\n" + "#{"#"*12}"
-		puts "\t\tQueries"
-		puts "\n" + "#{"#"*12}"
+		puts "\n#{"#"*HASHTAGS}"
+		puts "\t\t\tQueries"
+		puts "#{"#"*42}"
 		links.each do |key, value|
 			puts "Base URL : #{key}"
-			puts "Possible Inputs:"
 			value.each do |input|
-				puts input
+				if(input != nil)
+					puts "\t#{input}"
+				end
 			end
 		end
 	end
 
   	# 
 	def printForms forms
-		puts "\n" + "#{"#"*12}"
-		puts "\t\tForms"
-		puts "\n" + "#{"#"*12}"
+		puts "#{"#"*HASHTAGS}"
+		puts "\t\t\tForms"
+		puts "#{"#"*HASHTAGS}"
 		forms.each do |key, value|
 			puts "\nPage URL: #{key.to_s}"
 			value.each do |input|
-				puts "\tName: %s \n\t   Value: %s \n\t   Type:
-				 %s" %[input.name, input.value, input.type]
+				puts "\tName: %s \n\t   Value: %s \n\t   Type: %s 
+				"%[input.name, input.value, input.type]
 			end
 		end
 	end
 
  	# 
 	def printCookies cookies
-		puts "\n" + "#{"#"*12}"
-		puts "\t\tCookies"
-		puts "\n" + "#{"#"*12}"
+		puts "#{"#"*HASHTAGS}"
+		puts "\t\t\tCookies"
+		puts "#{"#"*HASHTAGS}"
 		
 		prevDom = ""
 
@@ -43,8 +43,8 @@ module ResultsOutput extend self
 				puts "Domain Name: #{cookie.domain}"
 				prevDom = cookie.domain
 			end
-			puts "\tName: %s \n\t   Value: %s" 
-				%[cookie.name, cookie.value]
+			puts "\tName: %s \n\t   Value: %s
+				"%[cookie.name, cookie.value]
 		end
 	end
 

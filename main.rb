@@ -11,8 +11,11 @@ def main
 					test = false
 				when  /\Atest\z/i
 					test = true
-				when  /\Aexit\z/i	
-					exit
+				when  /\Aexit\z/i
+					abort("Good bye!")
+				when /\A\z/
+					puts "Invalid Command: #{input[1]}"
+					abort("Good bye!")
 			end
 
 			@options
@@ -22,7 +25,7 @@ def main
 			crawler = Crawler.new(@options, input[2])
 			crawler.crawl(test)
 		else
-			puts "Invalid Command #{input[0]}"
+			puts "Invalid Command: #{input[0]}"
 		end
 	end
 end

@@ -11,9 +11,8 @@ class Fuzzer
 		@slow = options[:slow]
 		@customAuth = options[:customAuth]
 		@sensitiveFile = options[:sensitiveFile]
-		@vectorFile = options[:vectorsFile]
 
-		@vectors = Vectors.new(@vectorFile)
+		@vectors = Vectors.new(options[:vectorsFile])
 		@sensitiveData = File.readlines(@sensitiveFile).map{|line| line.strip} 
 		
 		@sensitiveReport = Hash.new
