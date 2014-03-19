@@ -20,6 +20,7 @@ class Crawler
 		@formInputs = Hash.new		
 		@cookies = Array.new	
 
+		puts options.inspect
 		@options = options
 		@link = link
 	end
@@ -43,9 +44,9 @@ class Crawler
 	#
 	def crawl test
 		puts "\n\tCrawling <#{@link}>\n"
-		
-		if(@options[:customAuth])
-			authenticate(@options[:customAuth])
+
+		if(@options[:customAuth] != nil || @options[:customAuth] != '')
+			authenticate(@link, @options[:customAuth])
 		end
 
 		# Get all the pages in the website.

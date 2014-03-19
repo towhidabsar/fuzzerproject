@@ -5,7 +5,8 @@ class Fuzzer
 	include ResultsOutput
 
 	# 
-	def initialize agent, linkQueries, formInputs, cookies, options
+	def initialize (agent, linkQueries = [], formInputs = [], 
+		cookies = [], options = {})
 		@agent = agent
 		@slow = options[:slow]
 		@customAuth = options[:customAuth]

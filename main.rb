@@ -17,9 +17,9 @@ def main
 
 			@options
 			splitInput = input[3..-1]
-			opts = optionsParsing(splitInput)
+			optionsParsing(splitInput)
 
-			crawler = Crawler.new(opts, input[2])
+			crawler = Crawler.new(@options, input[2])
 			crawler.crawl(test)
 		else
 			puts "Invalid Command #{input[0]}"
@@ -28,14 +28,15 @@ def main
 end
 
 #
-def optionsParsing(rawOptions)
+def optionsParsing(rawOptions = [])
 	@options = {
-		customAuth: "",
-		vectorsFile: "vectors-small.txt",
-		sensitiveFile: "sensitive-data.txt",
-		slow: 500,
-		random: 0
+		:customAuth => "",
+		:vectorsFile => "vectors-small.txt",
+		:sensitiveFile => "sensitive-data.txt",
+		:slow => 500,
+		:random => 0
 	}
+
 	rawOptions.each do |command|
 		case 
 			when command.start_with?("--custom-auth=")
@@ -56,7 +57,7 @@ end
 def notEmptyAdd sym, command
 	splitCommand = command.split("=")
 	if splitCommand[1] != nil || splitCommand[1] != ""
-		@options[sym => splitCommand[1]]
+		@options[sym] = splitCommand[1]
 	end
 end
 
