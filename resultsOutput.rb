@@ -1,12 +1,13 @@
+
 # 
 module ResultsOutput extend self
 
 	# Creates the arrays that are needed to hold the links
-	def printQueries
-		puts "\n##############################################"
+	def printQueries links
+		puts "\n" + "#{"#"*12}"
 		puts "\t\tQueries"
-		puts "\n##############################################"
-		@links.each do |key, value|
+		puts "\n" + "#{"#"*12}"
+		links.each do |key, value|
 			puts "Base URL : #{key}"
 			puts "Possible Inputs:"
 			value.each do |input|
@@ -16,11 +17,11 @@ module ResultsOutput extend self
 	end
 
   	# 
-	def printForms
-		puts "\n##############################################"
+	def printForms forms
+		puts "\n" + "#{"#"*12}"
 		puts "\t\tForms"
-		puts "\n##############################################"
-		@forms.each do |key, value|
+		puts "\n" + "#{"#"*12}"
+		forms.each do |key, value|
 			puts "\nPage URL: #{key.to_s}"
 			value.each do |input|
 				puts "\tName: %s \n\t   Value: %s \n\t   Type:
@@ -30,14 +31,14 @@ module ResultsOutput extend self
 	end
 
  	# 
-	def printCookies
-		puts "\n##############################################"
+	def printCookies cookies
+		puts "\n" + "#{"#"*12}"
 		puts "\t\tCookies"
-		puts "\n##############################################"
+		puts "\n" + "#{"#"*12}"
 		
 		prevDom = ""
 
-		@cookies.each do |cookie|
+		cookies.each do |cookie|
 			if(cookie.domain != prevDom)
 				puts "Domain Name: #{cookie.domain}"
 				prevDom = cookie.domain
@@ -48,43 +49,43 @@ module ResultsOutput extend self
 	end
 
 	#
-	def writeLog
+	def writeLog(sanitized, sensitive, senseData, report, posDOS)
 		File.open("output.txt", 'w') { |file| 
-			@finalResultSanitization.each  do |line|
+			sanitized.each  do |line|
 				file.write(line)
 			end
-			@finalResultSensitive.each do |line| 
+			sensitive.each do |line| 
 				file.write(line)
-				@sensitiveData.each do |data|
+				sensData.each do |data|
 					if line.include? data
-						@sensitiveReport[data] += 1 
+						report[data] += 1 
 					end
 				end
 			end
-			@possibleDOS.each do|line| 
+			posDOS.each do|line| 
 				file.write(line)
 			end
-
+		}#return
 	end
 
 	#
-	def writeReport 
+	def writeReport(sanitized, report, posDOS, httpErrorCodes)
 		File.open("report.txt", 'w') do |file|
 			file.write("Lack of Sanitization count: 
-				#{(@finalResultSanitization.length - 1)}")
+				#{(sanitized.length - 1)}")
 
-			file.write("\nSensitive Data Report:\n"
-			@sensitiveReport.each_key do |data|
+			file.write("\nSensitive Data Report:\n")
+			report.each_key do |data|
 				file.write("\n %s found in %s instances")
-				%[data, sensitiveReport[data]]
+				%[data, report[data]]
 			end
 
 			file.write("\nNumber of DOS Possibilities: 
-				#{(@possibleDOS.length - 1)}\n")
+				#{(@posDOS.length - 1)}\n")
 
 			file.write("HTTP Error Codes:\n")
 			file.write("\t%s found in %s instances\n")
-				%[@HTTPErrorCodes.uniq, (@HTTPErrorCodes.length - 1)]
+				%[httpErrorCodes.uniq, (httpErrorCodes.length - 1)]
 			puts "THE END"
 		end
 	end

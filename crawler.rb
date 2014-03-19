@@ -2,6 +2,7 @@ require 'mechanize'
 require './pageDiscovery'
 require './inputDiscovery'
 require './resultsOutput'
+require './fuzzer'
 
 class Crawler
 	include PageDiscovery
@@ -20,6 +21,7 @@ class Crawler
 		@cookies = Array.new	
 
 		@options = options
+		@link = link
 	end
 
 	#
@@ -40,10 +42,10 @@ class Crawler
 
 	#
 	def crawl test
-		puts "\n\tCrawling <#{opts[:link]}>\n"
+		puts "\n\tCrawling <#{@link}>\n"
 		
-		if(opts[:customAuth])
-			authenticate(opts[:customAuth])
+		if(@options[:customAuth])
+			authenticate(@options[:customAuth])
 		end
 
 		# Get all the pages in the website.

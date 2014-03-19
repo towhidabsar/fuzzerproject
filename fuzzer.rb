@@ -27,7 +27,7 @@ class Fuzzer
 		@possibleDOS = ["########\nPossible DOS in:\n##########\n"]
 		@finalResultSanitization = ["Lack of Sanitization in:\n"]
 		@finalResultSensitive = ["Sensitive Data in:\n"]
-		@HTTPErrorCodes = ["#########\nHTTP ERROR CODES:\n############\n"]
+		@httpErrorCodes = ["#########\nHTTP ERROR CODES:\n############\n"]
 	end
 
 	# 
@@ -55,6 +55,13 @@ class Fuzzer
 			puts "############# FORM INPUTS bodgeit ######################"
 			fuzzInputs
 		end
+
+		ResultsOutput.writeLog(@finalResultSanitization, 
+			@finalResultSensitive, @sensitiveData, @sensitiveReport,
+			@possibleDOS)
+
+		ResultsOutput.writeReport(@finalResultSanitization, 
+			@sensitiveReport, @possibleDOS, @httpErrorCodes)
 	end
 
 	# 
@@ -91,7 +98,7 @@ class Fuzzer
 	def checkSanitization(vector)
 		if @agent.page.body.include?(vector.chomp)
 			@finalResultSanitization << "Link: %s %s\n"
-			%[page.uri.host, page.uri.path]
+			%[@agent.page.uri.host, @agent.page.uri.path]
 		end
 	end
 
@@ -100,7 +107,7 @@ class Fuzzer
 		@sensitiveData.each do |data|
 			if @agent.page.content.include?(data)
 				@finalResultSensitive << "Link: %s %s contains %s\n"
-				%[page.uri.host, page.uri.path, data]
+				%[@agent.page.uri.host, @agent.page.uri.path, data]
 			end
 		end
 	end
@@ -131,7 +138,7 @@ class Fuzzer
 				begin
 					@agent.submit(form, button)
 				rescue => e
-					@HTTPErrorCodes << e
+					@httpErrorCodes << e
 				end
 			else
 				formBool = false
