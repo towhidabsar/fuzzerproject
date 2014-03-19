@@ -10,7 +10,7 @@ class Fuzzer
 		@agent = agent
 		@slow = options[:slow]
 		@customAuth = options[:customAuth]
-		@vectors = Vectors.new(options[:vectorsFile])
+		@vectors = Vector.new(options[:vectorsFile])
 		@sensitiveData = File.readlines(options[:sensitiveFile]).map{|line| line.strip} 
 		
 		@sensitiveReport = Hash.new
@@ -50,9 +50,9 @@ class Fuzzer
 			end
 		else
 			puts "############# LINK QUERIES bodgeit ######################"
-			fuzzQueries(@vectors, @linkQueries)
+			fuzzLinkQueries(@vectors, @linkQueries)
 			puts "############# FORM INPUTS bodgeit ######################"
-			fuzzInputs(@vectors, @formInputs)
+			fuzzFormInputs(@vectors, @formInputs)
 		end
 
 		ResultsOutput.writeLog(@finalResultSanitization, 
